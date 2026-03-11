@@ -1,0 +1,44 @@
+2026-03-11 09:34:25,699 - agent - INFO - vector_store.py:98 - [加载知识库]D:\AI大模型RAG智能体开发\Agent项目1\data\扫地机器人100问.pdf 内容加载成功
+2026-03-11 09:34:46,779 - agent - INFO - vector_store.py:98 - [加载知识库]D:\AI大模型RAG智能体开发\Agent项目1\data\扫地机器人100问2.txt 内容加载成功
+2026-03-11 09:35:12,980 - agent - INFO - vector_store.py:98 - [加载知识库]D:\AI大模型RAG智能体开发\Agent项目1\data\扫拖一体机器人100问.txt 内容加载成功
+2026-03-11 09:35:53,816 - agent - INFO - vector_store.py:98 - [加载知识库]D:\AI大模型RAG智能体开发\Agent项目1\data\故障排除.txt 内容加载成功
+2026-03-11 09:36:12,304 - agent - INFO - vector_store.py:98 - [加载知识库]D:\AI大模型RAG智能体开发\Agent项目1\data\维护保养.txt 内容加载成功
+2026-03-11 09:36:28,407 - agent - INFO - vector_store.py:98 - [加载知识库]D:\AI大模型RAG智能体开发\Agent项目1\data\选购指南.txt 内容加载成功
+2026-03-11 09:38:03,304 - agent - INFO - vector_store.py:76 - [加载知识库]D:\AI大模型RAG智能体开发\Agent项目1\data\扫地机器人100问.pdf内容已经存在知识库内，跳过
+2026-03-11 09:38:03,305 - agent - INFO - vector_store.py:76 - [加载知识库]D:\AI大模型RAG智能体开发\Agent项目1\data\扫地机器人100问2.txt内容已经存在知识库内，跳过
+2026-03-11 09:38:03,306 - agent - INFO - vector_store.py:76 - [加载知识库]D:\AI大模型RAG智能体开发\Agent项目1\data\扫拖一体机器人100问.txt内容已经存在知识库内，跳过
+2026-03-11 09:38:03,306 - agent - INFO - vector_store.py:76 - [加载知识库]D:\AI大模型RAG智能体开发\Agent项目1\data\故障排除.txt内容已经存在知识库内，跳过
+2026-03-11 09:38:03,307 - agent - INFO - vector_store.py:76 - [加载知识库]D:\AI大模型RAG智能体开发\Agent项目1\data\维护保养.txt内容已经存在知识库内，跳过
+2026-03-11 09:38:03,308 - agent - INFO - vector_store.py:76 - [加载知识库]D:\AI大模型RAG智能体开发\Agent项目1\data\选购指南.txt内容已经存在知识库内，跳过
+2026-03-11 11:06:21,362 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有1条消息。
+2026-03-11 11:06:21,363 - agent - DEBUG - middleware.py:42 - [log_before_model]HumanMessage | 给我生成我的使用报告
+2026-03-11 11:06:24,158 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：get_user_id
+2026-03-11 11:06:24,158 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{}
+2026-03-11 11:06:24,158 - agent - INFO - middleware.py:24 - [tool monitor]工具get_user_id调用成功
+2026-03-11 11:06:24,159 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有3条消息。
+2026-03-11 11:06:24,159 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 1008
+2026-03-11 11:06:31,761 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：get_current_month
+2026-03-11 11:06:31,762 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{}
+2026-03-11 11:06:31,762 - agent - INFO - middleware.py:24 - [tool monitor]工具get_current_month调用成功
+2026-03-11 11:06:31,762 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有5条消息。
+2026-03-11 11:06:31,763 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 2025-07
+2026-03-11 11:06:33,539 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：fill_context_for_report
+2026-03-11 11:06:33,539 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{}
+2026-03-11 11:06:33,539 - agent - INFO - middleware.py:24 - [tool monitor]工具fill_context_for_report调用成功
+2026-03-11 11:06:33,540 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有7条消息。
+2026-03-11 11:06:33,540 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | fill_context_for_report已调用
+2026-03-11 11:06:36,327 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：fetch_external_data
+2026-03-11 11:06:36,328 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{'user_id': '1008', 'month': '2025-07'}
+2026-03-11 11:06:36,330 - agent - INFO - middleware.py:24 - [tool monitor]工具fetch_external_data调用成功
+2026-03-11 11:06:36,331 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有9条消息。
+2026-03-11 11:06:36,331 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | {"特征": "100㎡三居 | 三口之家 | 大理石", "效率": "覆盖率:85%\\n餐桌区域漏扫:2次/天\\n避障成功率:89%", "耗材": "主刷磨损:轻度+\\n水箱加水:每日3次", "对比": "大理石地面清洁效果低于同类17%"}
+2026-03-11 11:06:40,346 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：rag_summarize
+2026-03-11 11:06:40,346 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{'query': '大理石地面清洁效果优化建议'}
+2026-03-11 11:06:43,459 - agent - INFO - middleware.py:24 - [tool monitor]工具rag_summarize调用成功
+2026-03-11 11:06:43,459 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有11条消息。
+2026-03-11 11:06:43,459 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 使用中性清洁剂定期清洁大理石地面，避免酸性或碱性强的清洁产品；及时清除污渍，防止渗透；清洁后用清水冲洗并彻底擦干；定期进行专业养护和密封处理以增强抗污能力。
+2026-03-11 11:06:45,378 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：rag_summarize
+2026-03-11 11:06:45,378 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{'query': '扫地机器人餐桌区域漏扫解决方案'}
+2026-03-11 11:06:49,658 - agent - INFO - middleware.py:24 - [tool monitor]工具rag_summarize调用成功
+2026-03-11 11:06:49,659 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有13条消息。
+2026-03-11 11:06:49,659 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 针对扫地机器人在餐桌区域漏扫的问题，可采取以下措施：确保餐桌周围无杂物遮挡，清理地面障碍物；调整桌腿位置或使用反光贴纸增强识别；检查并清洁机器人传感器，避免因灰尘影响导航；更新固件或地图数据以优化路径规划；若为低矮桌底，可设置虚拟墙或禁区防止误入导致漏扫。
