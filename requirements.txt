@@ -1,0 +1,11 @@
+langchain==0.3.7
+langchain-core==0.3.18
+langchain-community==0.3.7
+langgraph==0.2.50
+langchain-chroma==0.1.4
+langchain-text-splitters==0.3.2
+streamlit==1.40.1
+chromadb==0.5.15
+pypdf==5.1.0
+pyyaml==6.0.2
+dashscope==1.20.14
