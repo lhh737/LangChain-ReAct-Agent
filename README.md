@@ -1,134 +1,158 @@
-# 智扫通机器人智能客服系统 🤖
-## 项目概述
-- 智扫通是一个基于大语言模型的智能客服系统，专为扫地机器人场景设计（可替换）
-- 系统结合了多工具智能体、RAG检索增强和流式对话等功能，能够处理用户咨询、生成使用报告等多种任务。
+# 🤖智扫通机器人智能客服系统 
 
+## 项目概述
+
+- 本项目聚焦于智能客服场景下的 Agent 应用实践，通过引入知识库检索、工具调用和动态提示词切换，实现对用户咨询、故障问答和使用报告生成等任务的支持。  
+- 项目当前以扫地机器人为示例场景，后续也可扩展到其他垂直客服场景。
 ---
 
 ## 核心特性
 
-#### 1) 多工具模块
-- 集成天气查询、用户信息获取、外部数据检索等多种工具
+### 1. ReAct Agent 多工具调用
+- 集成外部信息查询、用户信息获取等工具能力，支持 Agent 根据任务自动选择合适工具完成辅助推理。
 
-#### 2) RAG检索增强
-- 基于向量数据库的知识库检索，提供精准问答
+### 2. RAG 检索增强问答
+- 基于向量数据库构建知识库检索能力，支持对扫地机器人相关文档进行召回与问答生成，提升回复准确性。
 
-#### 3) 智能报告生成
-- 动态切换提示词，为用户生成个性化的使用分析报告
+### 3. 个性化报告生成
+- 通过动态提示词切换，在普通问答模式与报告生成模式之间灵活切换，为用户生成定制化使用分析内容。
 
-#### 4) 流式对话界面
-- 基于Streamlit的实时聊天界面，交互流畅自然
+### 4. Streamlit 流式对话界面
+- 提供可交互的聊天界面，支持流式输出，便于展示完整的 Agent 问答过程与使用体验。
 
-#### 5) 模块化设计
-- 工厂模式、中间件机制，易于扩展和维护
+### 5. 模块化工程结构
+- 项目按 Agent、RAG、模型层、配置层、工具层等模块进行拆分，便于理解整体架构并支持后续扩展。
 
 ---
-
-## 系统架构
+## 项目结构
 
 ```bash
-
-├── agent/                       # 智能体模块
+.
+├── agent/                       # Agent 核心逻辑
 │   ├── react_agent.py           # ReAct智能体主逻辑
 │   ├── tools/                   # 工具函数集合
 │   └── middleware.py            # 中间件管理
-├── config/                      # 配置文件
+├── assets/                      # README 展示图片等静态资源
+├── config/                      # YAML 配置文件
 │   ├── agent.yml                # 智能体配置
 │   ├── chroma.yml               # 向量库配置
 │   ├── prompts.yml              # 提示词配置
 │   └── rag.yml                  # RAG配置
-├── data/                        # 知识库文档
-├── logs/                        # 系统日志
-├── model/                       # 模型层
+├── data/                        # 知识库文档与外部数据
+├── model/                       # 模型工厂与模型初始化
 │   └── factory.py               # 模型工厂
-├── rag/                         # RAG模块
+├── prompts/                     # 提示词模板
+├── rag/                         # 检索增强相关模块
 │   ├── rag_service.py           # 检索服务
 │   └── vector_store.py          # 向量存储
-├── utils/                       # 工具函数
+├── utils/                       # 通用工具函数
 │   ├── config_handler.py        # 配置加载
 │   ├── file_handler.py          # 文件处理
 │   ├── logger_handler.py        # 日志管理
 │   ├── path_tool.py             # 路径工具
 │   └── prompt_loader.py         # 提示词加载
-└── app.py                       # Streamlit应用入口
+├── app.py                       # Streamlit 应用入口
+├── requirements.txt
+└── README.md
+```
 
+## 工作流程
+```md
+
+1. 用户在 Streamlit 页面输入问题
+
+2. Agent 判断当前任务类型 -> 普通问答 / 报告生成
+
+3. 普通问答场景下，调用 RAG 模块检索知识库内容
+
+4. 特定任务场景下，调用外部工具或结构化数据进行辅助生成
+
+5. 最终结果通过流式方式返回到前端界面
 ```
 ---
 ## 效果预览
 
-#### **后台日志与本地读取**
+### 1. 聊天界面展示
+- 展示用户在前端输入问题后，系统返回问答结果的整体效果。
 
-<img src="cha1.png" width="600"/>
+<img src="assets/chat1.png" width="700"/>
 
-#### **生成示例：Agent工具调用**
+### 2. Agent 工具调用过程
+- 展示 Agent 在任务处理中调用外部工具或执行中间推理的过程。
+  
+<img src="assets/chat2.png" width="700"/>
 
-<img src="cha.png" width="500"/>
+### 3. 报告生成示例
+- 展示系统根据用户数据生成个性化分析报告的结果页面。
+
+<img src="assets/chat3.png" width="700"/>
 
 ---
 
-## 快速开始
-- 环境要求默认
 
-- 阿里云百炼模型API密钥（或其他大模型API）
+## 快速开始
+
+### 环境要求
+- Python 3.10 及以上
+- 可用的大模型 API Key（如阿里云百炼）
+
+### 运行前准备
+- 安装项目依赖
+- 配置模型 API Key
+- 准备知识库文档与相关配置文件
 
 ---
 
 ## 安装步骤
 
 - 克隆项目
+```bash
 
-> git clone https://github.com/lhh737/Langchain-ReAct-Agent.git
-
+git clone https://github.com/lhh737/Langchain-ReAct-Agent.git
+```
 - 安装依赖
-
-> pip install -r requirements.txt
-
+```bash
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
 - 配置环境变量
 
-- 在config目录下创建相应yml配置文件
-
-> export DASHSCOPE_API_KEY="your-api-key"
-
+- 在config目录下创建调整相应的 yml 配置文件
+```bash
+export DASHSCOPE_API_KEY = "your-api-key"
+```
 - 启动应用
-
-> streamlit run app.py
-
+```bash
+streamlit run app.py
+```
 ---
 
-## 主要功能
 
-- 智能问答：基于知识库的精准问答，支持PDF、TXT等多种格式输入
+## 支持的任务类型
 
-- 工具调用：集成天气、位置、用户信息等工具，实时获取信息优化大模型输出
-
-- 上下文管理：自动切换提示词，适配不同场景
+- **知识库问答**：针对扫地机器人等相关文档进行检索与问答生成
+- **工具辅助问答**：在需要外部信息时调用工具增强回复效果
+- **报告生成**：根据输入数据与任务要求生成个性化分析报告
+- **多场景提示词切换**：根据任务类型自动选择合适的提示词模板
 
 ---
 
 ## 配置说明
 
-- 系统通过YAML文件进行配置管理：
+- 项目主要通过 YAML 文件进行配置管理：
 
-> config/agent.yml - 智能体相关配置
-
-
-
-> config/chroma.yml - 向量数据库配置
-
-
-> config/prompts.yml - 各场景提示词配置
-
-
-> config/rag.yml - RAG检索配置
+- `config/agent.yml` ：Agent 行为与任务流程相关配置
+- `config/chroma.yml` ：向量数据库与检索存储配置
+- `config/prompts.yml` ：不同任务场景下的提示词配置
+- `config/rag.yml` ：RAG 检索参数配置
 
 ---
 
 ## 感谢与支持
-- **Black Horse**
-- Langchain/LangGraph
+- Black Horse
+- Langchain / LangGraph
 - Streamlit
-- Chrome
-- Aliyun
+- Chroma
+- Alibaba Cloud DashScope
 
 ---
 
