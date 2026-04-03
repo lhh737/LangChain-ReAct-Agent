@@ -1,4 +1,5 @@
-# 🤖智扫通机器人智能客服系统 
+# 🤖 LangChain ReAct Agent 智能客服
+
 
 ## 项目概述
 
@@ -57,7 +58,7 @@
 ```
 
 ## 工作流程
-```md
+
 
 1. 用户在 Streamlit 页面输入问题
 
@@ -68,7 +69,7 @@
 4. 特定任务场景下，调用外部工具或结构化数据进行辅助生成
 
 5. 最终结果通过流式方式返回到前端界面
-```
+
 ---
 ## 效果预览
 
@@ -109,7 +110,7 @@
 - 克隆项目
 ```bash
 
-git clone https://github.com/lhh737/Langchain-ReAct-Agent.git
+git clone https://github.com/lhh737/LangChain-ReAct-Agent.git
 ```
 - 安装依赖
 ```bash
@@ -119,7 +120,7 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 - 在config目录下创建调整相应的 yml 配置文件
 ```bash
-export DASHSCOPE_API_KEY = "your-api-key"
+export DASHSCOPE_API_KEY="your-api-key"
 ```
 - 启动应用
 ```bash
@@ -139,14 +140,36 @@ streamlit run app.py
 
 ## 配置说明
 
-- 项目主要通过 YAML 文件进行配置管理：
+- 项目主要通过 YAML 文件进行配置管理，首次运行时，建议优先检查以下文件：
 
-- `config/agent.yml` ：Agent 行为与任务流程相关配置
-- `config/chroma.yml` ：向量数据库与检索存储配置
-- `config/prompts.yml` ：不同任务场景下的提示词配置
-- `config/rag.yml` ：RAG 检索参数配置
+> `config/agent.yml` ：Agent 行为与任务流程相关配置
 
+> `config/chroma.yml` ：向量数据库与检索存储配置
+
+> `config/prompts.yml` ：不同任务场景下的提示词配置
+
+> `config/rag.yml` ：RAG 检索参数配置
+
+
+- 若只想完成最小化本地运行，建议先确保：
+1. 已正确配置模型 API Key
+
+2. `config/` 下必要的 YAML 文件已存在
+
+3. `data/` 目录中已放入知识库文档
 ---
+## 最小成功演示
+
+- 应用启动后，可先尝试以下问题验证项目是否正常运行：
+
+#### 普通问答
+- 扫地机器人有哪些主要功能？
+- 如果机器人无法正常回充，该如何处理？
+
+#### 报告生成
+- 请根据用户数据生成一份个性化使用报告。
+
+如果以上问题能够正常返回内容，说明项目的基础问答与任务切换流程已经运行成功。
 
 ## 感谢与支持
 - Black Horse
