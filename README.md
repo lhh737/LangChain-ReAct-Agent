@@ -83,10 +83,7 @@
   
 <img src="assets/chat2.png" width="700"/>
 
-### 3. 报告生成示例
-- 展示系统根据用户数据生成个性化分析报告的结果页面。
 
-<img src="assets/chat3.png" width="700"/>
 
 
 ---
