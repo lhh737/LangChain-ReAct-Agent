@@ -168,12 +168,7 @@ streamlit run app.py
 
 如果以上问题能够正常返回内容，说明项目的基础问答与任务切换流程已经运行成功。
 
-## 感谢与支持
-- Black Horse
-- Langchain / LangGraph
-- Streamlit
-- Chroma
-- Alibaba Cloud DashScope
+
 
 ---
 
