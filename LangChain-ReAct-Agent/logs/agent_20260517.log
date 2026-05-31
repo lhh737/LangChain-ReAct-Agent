@@ -1,0 +1,77 @@
+2026-05-17 13:45:12,135 - agent - INFO - middleware.py:74 - [log_before_model]即将调用模型，带有1条消息。
+2026-05-17 13:45:12,135 - agent - DEBUG - middleware.py:76 - [log_before_model]HumanMessage | 帮我生成一份使用报告
+2026-05-17 13:45:16,094 - agent - INFO - middleware.py:40 - [tool monitor]执行工具：fill_context_for_report
+2026-05-17 13:45:16,094 - agent - INFO - middleware.py:41 - [tool monitor]传入参数：{}
+2026-05-17 13:45:16,094 - agent - INFO - middleware.py:49 - [tool monitor]工具fill_context_for_report调用成功（尝试 1 次）
+2026-05-17 13:45:16,096 - agent - INFO - middleware.py:74 - [log_before_model]即将调用模型，带有3条消息。
+2026-05-17 13:45:16,097 - agent - DEBUG - middleware.py:76 - [log_before_model]ToolMessage | fill_context_for_report已调用
+2026-05-17 13:45:18,361 - agent - INFO - middleware.py:40 - [tool monitor]执行工具：get_user_id
+2026-05-17 13:45:18,361 - agent - INFO - middleware.py:41 - [tool monitor]传入参数：{}
+2026-05-17 13:45:18,361 - agent - WARNING - middleware.py:58 - [tool monitor]工具get_user_id调用失败（尝试 1/3），原因：模拟数据库连接失败
+2026-05-17 13:45:18,868 - agent - WARNING - middleware.py:58 - [tool monitor]工具get_user_id调用失败（尝试 2/3），原因：模拟数据库连接失败
+2026-05-17 13:45:19,378 - agent - WARNING - middleware.py:58 - [tool monitor]工具get_user_id调用失败（尝试 3/3），原因：模拟数据库连接失败
+2026-05-17 13:45:19,378 - agent - ERROR - middleware.py:66 - [tool monitor]工具get_user_id重试3次后仍失败
+2026-05-17 16:17:53,560 - agent - INFO - rag_service.py:62 - 混合检索召回 5 个文档，query=扫地机器人有哪些主要功能？
+2026-05-17 16:22:46,253 - agent - INFO - rag_service.py:62 - 混合检索召回 18 个文档，query=扫地机器人有哪些主要功能？
+2026-05-17 17:51:24,968 - agent - INFO - rag_service.py:323 - DAT 动态权重计算成功: 向量=0.70, BM25=0.30
+2026-05-17 17:51:24,968 - agent - INFO - rag_service.py:401 - 使用 DAT 动态权重: 向量=0.70, BM25=0.30
+2026-05-17 17:51:25,664 - agent - INFO - rag_service.py:367 - Qwen Rerank 完成，输入 10 个文档，输出 5 个
+2026-05-17 17:51:25,668 - agent - INFO - rag_service.py:436 - 最终召回 5 个文档，query=扫地机器人有哪些主要功能？
+2026-05-17 18:02:45,594 - agent - INFO - middleware.py:74 - [log_before_model]即将调用模型，带有1条消息。
+2026-05-17 18:02:45,596 - agent - DEBUG - middleware.py:76 - [log_before_model]HumanMessage | 扫地机器人有哪些主要功能？
+2026-05-17 18:02:48,016 - agent - INFO - middleware.py:40 - [tool monitor]执行工具：rag_summarize
+2026-05-17 18:02:48,016 - agent - INFO - middleware.py:41 - [tool monitor]传入参数：{'query': '扫地机器人的主要功能有哪些'}
+2026-05-17 18:02:51,269 - agent - INFO - rag_service.py:323 - DAT 动态权重计算成功: 向量=0.70, BM25=0.30
+2026-05-17 18:02:51,269 - agent - INFO - rag_service.py:401 - 使用 DAT 动态权重: 向量=0.70, BM25=0.30
+2026-05-17 18:02:51,757 - agent - INFO - rag_service.py:367 - Qwen Rerank 完成，输入 10 个文档，输出 5 个
+2026-05-17 18:02:51,759 - agent - INFO - rag_service.py:436 - 最终召回 5 个文档，query=扫地机器人的主要功能有哪些
+2026-05-17 18:02:55,341 - agent - INFO - middleware.py:49 - [tool monitor]工具rag_summarize调用成功（尝试 1 次）
+2026-05-17 18:02:55,343 - agent - INFO - middleware.py:74 - [log_before_model]即将调用模型，带有3条消息。
+2026-05-17 18:02:55,344 - agent - DEBUG - middleware.py:76 - [log_before_model]ToolMessage | 扫地机器人的主要功能包括：边刷和主刷高度可调节以适配不同地面材质、清扫预约（支持7天内自定义时间与模式）、临时暂停后可续扫、开机自动进行机身自检（检测电机、传感器、电池等状态），以及针对不同环境（如地毯、水泥地、宠物家庭、复式楼层、镜面家具区域等）提供相应的清扫与维护适配能力。
+2026-05-17 18:13:56,048 - agent - INFO - middleware.py:74 - [log_before_model]即将调用模型，带有3条消息。
+2026-05-17 18:13:56,048 - agent - DEBUG - middleware.py:76 - [log_before_model]HumanMessage | 如果机器人无法正常回充，该如何处理？
+2026-05-17 18:13:57,549 - agent - INFO - middleware.py:40 - [tool monitor]执行工具：rag_summarize
+2026-05-17 18:13:57,549 - agent - INFO - middleware.py:41 - [tool monitor]传入参数：{'query': '扫地机器人无法回充故障处理'}
+2026-05-17 18:13:58,904 - agent - INFO - rag_service.py:323 - DAT 动态权重计算成功: 向量=0.30, BM25=0.70
+2026-05-17 18:13:58,905 - agent - INFO - rag_service.py:401 - 使用 DAT 动态权重: 向量=0.30, BM25=0.70
+2026-05-17 18:13:59,467 - agent - INFO - rag_service.py:367 - Qwen Rerank 完成，输入 10 个文档，输出 5 个
+2026-05-17 18:13:59,469 - agent - INFO - rag_service.py:436 - 最终召回 5 个文档，query=扫地机器人无法回充故障处理
+2026-05-17 18:14:00,971 - agent - INFO - middleware.py:49 - [tool monitor]工具rag_summarize调用成功（尝试 1 次）
+2026-05-17 18:14:00,971 - agent - INFO - middleware.py:74 - [log_before_model]即将调用模型，带有5条消息。
+2026-05-17 18:14:00,971 - agent - DEBUG - middleware.py:76 - [log_before_model]ToolMessage | 扫地机器人无法回充时，可按以下步骤处理：检查APP中“自动回充”功能是否开启，确认地图中充电座位置未被修改；擦拭机器人底部的回充传感器及充电座红外感应区，确保无灰尘或遮挡；调整充电座位置，保证信号正常；若仍无法回充，检测回充传感器是否故障。手动放回充电座后如能正常充电，通常为传感器或信号问题。
+2026-05-17 18:26:17,191 - agent - INFO - middleware.py:74 - [log_before_model]即将调用模型，带有5条消息。
+2026-05-17 18:26:17,191 - agent - DEBUG - middleware.py:76 - [log_before_model]HumanMessage | 请根据用户数据生成一份个性化使用报告
+2026-05-17 18:26:20,360 - agent - INFO - middleware.py:40 - [tool monitor]执行工具：fill_context_for_report
+2026-05-17 18:26:20,360 - agent - INFO - middleware.py:41 - [tool monitor]传入参数：{}
+2026-05-17 18:26:20,363 - agent - INFO - middleware.py:49 - [tool monitor]工具fill_context_for_report调用成功（尝试 1 次）
+2026-05-17 18:26:20,364 - agent - INFO - middleware.py:74 - [log_before_model]即将调用模型，带有7条消息。
+2026-05-17 18:26:20,364 - agent - DEBUG - middleware.py:76 - [log_before_model]ToolMessage | fill_context_for_report已调用
+2026-05-17 18:26:21,672 - agent - INFO - middleware.py:40 - [tool monitor]执行工具：get_user_id
+2026-05-17 18:26:21,672 - agent - INFO - middleware.py:41 - [tool monitor]传入参数：{}
+2026-05-17 18:26:21,674 - agent - INFO - middleware.py:49 - [tool monitor]工具get_user_id调用成功（尝试 1 次）
+2026-05-17 18:26:21,674 - agent - INFO - middleware.py:40 - [tool monitor]执行工具：get_current_month
+2026-05-17 18:26:21,675 - agent - INFO - middleware.py:41 - [tool monitor]传入参数：{}
+2026-05-17 18:26:21,675 - agent - INFO - middleware.py:49 - [tool monitor]工具get_current_month调用成功（尝试 1 次）
+2026-05-17 18:26:21,677 - agent - INFO - middleware.py:74 - [log_before_model]即将调用模型，带有10条消息。
+2026-05-17 18:26:21,677 - agent - DEBUG - middleware.py:76 - [log_before_model]ToolMessage | 2025-10
+2026-05-17 18:26:23,480 - agent - INFO - middleware.py:40 - [tool monitor]执行工具：fetch_external_data
+2026-05-17 18:26:23,480 - agent - INFO - middleware.py:41 - [tool monitor]传入参数：{'user_id': '1002', 'month': '2025-10'}
+2026-05-17 18:26:23,483 - agent - INFO - middleware.py:49 - [tool monitor]工具fetch_external_data调用成功（尝试 1 次）
+2026-05-17 18:26:23,485 - agent - INFO - middleware.py:74 - [log_before_model]即将调用模型，带有12条消息。
+2026-05-17 18:26:23,485 - agent - DEBUG - middleware.py:76 - [log_before_model]ToolMessage | {"特征": "70㎡公寓 | 情侣 | 瓷砖", "效率": "覆盖率:89%\\n避障失败:1次/周（电线缠绕）", "耗材": "边刷寿命:剩余50天\\n尘盒清理:每3天", "对比": "拖地功能使用率低于同类25%"}
+2026-05-17 18:26:26,088 - agent - INFO - middleware.py:40 - [tool monitor]执行工具：rag_summarize
+2026-05-17 18:26:26,088 - agent - INFO - middleware.py:41 - [tool monitor]传入参数：{'query': '瓷砖地面清洁与边刷维护建议'}
+2026-05-17 18:26:26,088 - agent - INFO - middleware.py:40 - [tool monitor]执行工具：rag_summarize
+2026-05-17 18:26:26,092 - agent - INFO - middleware.py:41 - [tool monitor]传入参数：{'query': '拖地功能使用率低的原因及提升建议'}
+2026-05-17 18:26:27,521 - agent - INFO - rag_service.py:323 - DAT 动态权重计算成功: 向量=0.20, BM25=0.80
+2026-05-17 18:26:27,521 - agent - INFO - rag_service.py:401 - 使用 DAT 动态权重: 向量=0.20, BM25=0.80
+2026-05-17 18:26:27,757 - agent - INFO - rag_service.py:323 - DAT 动态权重计算成功: 向量=0.40, BM25=0.60
+2026-05-17 18:26:27,757 - agent - INFO - rag_service.py:401 - 使用 DAT 动态权重: 向量=0.40, BM25=0.60
+2026-05-17 18:26:28,226 - agent - INFO - rag_service.py:367 - Qwen Rerank 完成，输入 10 个文档，输出 5 个
+2026-05-17 18:26:28,228 - agent - INFO - rag_service.py:436 - 最终召回 5 个文档，query=拖地功能使用率低的原因及提升建议
+2026-05-17 18:26:28,317 - agent - INFO - rag_service.py:367 - Qwen Rerank 完成，输入 10 个文档，输出 5 个
+2026-05-17 18:26:28,319 - agent - INFO - rag_service.py:436 - 最终召回 5 个文档，query=瓷砖地面清洁与边刷维护建议
+2026-05-17 18:26:31,631 - agent - INFO - middleware.py:49 - [tool monitor]工具rag_summarize调用成功（尝试 1 次）
+2026-05-17 18:26:32,979 - agent - INFO - middleware.py:49 - [tool monitor]工具rag_summarize调用成功（尝试 1 次）
+2026-05-17 18:26:32,979 - agent - INFO - middleware.py:74 - [log_before_model]即将调用模型，带有15条消息。
+2026-05-17 18:26:32,984 - agent - DEBUG - middleware.py:76 - [log_before_model]ToolMessage | 拖地功能使用率低可能与用户对维护要求不了解或环境适配不当有关。参考资料指出，拖地后需立即拆洗拖布、清理支架、排空水箱以防发霉和水垢；不同地面（如木地板、瓷砖、长毛地毯）需调整出水量或关闭拖地功能以避免损坏。提升建议包括：正确执行日常维护、根据地面类型设置湿拖禁区或干拖模式、利用自动洗拖布功能减少手动操作，并确保APP中相关功能（如拖布抬升）已开启。
