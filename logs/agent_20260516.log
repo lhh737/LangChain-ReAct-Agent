@@ -1,0 +1,99 @@
+2026-05-16 18:54:30,991 - agent - INFO - vector_store.py:99 - [加载知识库]C:\迅雷下载\LangChain-ReAct-Agent\data\扫地机器人100问.pdf 内容加载成功
+2026-05-16 18:54:35,224 - agent - INFO - vector_store.py:99 - [加载知识库]C:\迅雷下载\LangChain-ReAct-Agent\data\扫地机器人100问2.txt 内容加载成功
+2026-05-16 18:54:38,957 - agent - INFO - vector_store.py:99 - [加载知识库]C:\迅雷下载\LangChain-ReAct-Agent\data\扫拖一体机器人100问.txt 内容加载成功
+2026-05-16 18:54:46,682 - agent - INFO - vector_store.py:99 - [加载知识库]C:\迅雷下载\LangChain-ReAct-Agent\data\故障排除.txt 内容加载成功
+2026-05-16 18:54:50,574 - agent - INFO - vector_store.py:99 - [加载知识库]C:\迅雷下载\LangChain-ReAct-Agent\data\维护保养.txt 内容加载成功
+2026-05-16 18:54:57,512 - agent - INFO - vector_store.py:99 - [加载知识库]C:\迅雷下载\LangChain-ReAct-Agent\data\选购指南.txt 内容加载成功
+2026-05-16 18:55:46,748 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有1条消息。
+2026-05-16 18:55:46,748 - agent - DEBUG - middleware.py:42 - [log_before_model]HumanMessage | 请根据用户数据生成一份个性化使用报告（报告生成 + 工具调用）
+2026-05-16 18:55:49,525 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：get_user_id
+2026-05-16 18:55:49,525 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{}
+2026-05-16 18:55:49,527 - agent - INFO - middleware.py:24 - [tool monitor]工具get_user_id调用成功
+2026-05-16 18:55:49,532 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有3条消息。
+2026-05-16 18:55:49,532 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 1004
+2026-05-16 18:55:51,033 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：get_current_month
+2026-05-16 18:55:51,035 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{}
+2026-05-16 18:55:51,035 - agent - INFO - middleware.py:24 - [tool monitor]工具get_current_month调用成功
+2026-05-16 18:55:51,039 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有5条消息。
+2026-05-16 18:55:51,041 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 2025-10
+2026-05-16 18:55:53,636 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：fill_context_for_report
+2026-05-16 18:55:53,637 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{}
+2026-05-16 18:55:53,638 - agent - INFO - middleware.py:24 - [tool monitor]工具fill_context_for_report调用成功
+2026-05-16 18:55:53,648 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有7条消息。
+2026-05-16 18:55:53,648 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | fill_context_for_report已调用
+2026-05-16 18:55:56,390 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：fetch_external_data
+2026-05-16 18:55:56,390 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{'user_id': '1004', 'month': '2025-10'}
+2026-05-16 18:55:56,394 - agent - INFO - middleware.py:24 - [tool monitor]工具fetch_external_data调用成功
+2026-05-16 18:55:56,436 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有9条消息。
+2026-05-16 18:55:56,438 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | {"特征": "85㎡ | 2猫 | 混合地面", "效率": "猫砂泼洒处理:7次/月\\n自动回充成功率:90%", "耗材": "主刷缠绕:轻度\\n滤网寿命:剩余55天", "对比": "清洁效率优于同类养宠家庭20%"}
+2026-05-16 18:55:58,263 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：rag_summarize
+2026-05-16 18:55:58,263 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{'query': '养猫家庭扫地机器人保养建议'}
+2026-05-16 18:56:01,312 - agent - INFO - middleware.py:24 - [tool monitor]工具rag_summarize调用成功
+2026-05-16 18:56:01,345 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有11条消息。
+2026-05-16 18:56:01,345 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 养猫家庭使用扫地机器人需每日清理主刷、尘盒和拖布，及时清除防撞条缝隙及边刷上的毛发，防止卡顿或电机损坏；若沾到宠物粪便应立即用湿巾和中性洗涤剂清洁；每周进行除味消毒，并将耗材更换周期缩短50%。
+2026-05-16 18:56:02,961 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：rag_summarize
+2026-05-16 18:56:02,961 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{'query': '混合地面扫地机器人使用技巧'}
+2026-05-16 18:56:09,701 - agent - INFO - middleware.py:24 - [tool monitor]工具rag_summarize调用成功
+2026-05-16 18:56:09,803 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有13条消息。
+2026-05-16 18:56:09,803 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 混合地面扫地机器人使用技巧包括：在短毛地毯环境启用地毯增压功能后检查主刷是否复位，并每周清理地毯边缘灰尘以防漏扫；水泥地或老旧地砖环境清扫后立即清理机身底部和轮组泥沙，减少拖地频次避免灰尘结块；宠物家庭每次清扫后需全面清理主刷、尘盒和拖布，每周除味消毒并将耗材更换周期缩短50%；阳台封闭环境拖地后及时通风并清理轮组泥沙；复式或多层楼层应为每层单独建图，换层前清理底部和传感器并校准参数；有镜面或玻璃家具时，清扫前清洁避障传感器以防反光干扰建图；低矮家具底部区域需手动辅助清理死角，并每周清洁底部传感器防止灰尘遮挡。日常还需每日擦拭机身外壳，每次清扫后清理防撞条缝隙的毛发线头。
+2026-05-16 19:28:50,665 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有1条消息。
+2026-05-16 19:28:50,666 - agent - DEBUG - middleware.py:42 - [log_before_model]HumanMessage | 如果机器人无法正常回充，该如何处理？
+2026-05-16 19:28:52,506 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：rag_summarize
+2026-05-16 19:28:52,506 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{'query': '扫地机器人无法正常回充 故障处理'}
+2026-05-16 19:28:55,583 - agent - INFO - middleware.py:24 - [tool monitor]工具rag_summarize调用成功
+2026-05-16 19:28:55,585 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有3条消息。
+2026-05-16 19:28:55,585 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 扫地机器人无法正常回充时，可检查以下几点：确认APP中“自动回充”功能是否开启；核实地图中充电座位置是否被修改；清理机器人回充传感器上的灰尘；若电量低于20%，机器人会优先回充；若问题仍存在，可尝试重启设备或检查是否有故障提示。
+2026-05-16 19:29:24,782 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有1条消息。
+2026-05-16 19:29:24,782 - agent - DEBUG - middleware.py:42 - [log_before_model]HumanMessage | 如果机器人无法正常回充，该如何处理？
+2026-05-16 19:29:26,493 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：rag_summarize
+2026-05-16 19:29:26,494 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{'query': '扫地机器人无法正常回充 故障处理'}
+2026-05-16 19:29:29,579 - agent - INFO - middleware.py:24 - [tool monitor]工具rag_summarize调用成功
+2026-05-16 19:29:29,579 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有3条消息。
+2026-05-16 19:29:29,579 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 扫地机器人无法正常回充时，可按以下步骤处理：检查APP中是否关闭了“自动回充”功能；确认地图中充电座位置未被修改；清理机器人回充传感器上的灰尘；若电量低于20%，机器人会优先回充，属正常行为；若问题持续，可尝试重启设备或检查是否有故障提示。
+2026-05-16 19:30:30,664 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有3条消息。
+2026-05-16 19:30:30,664 - agent - DEBUG - middleware.py:42 - [log_before_model]HumanMessage | 你说的 重启或查看故障提示, 具体是什么
+2026-05-16 19:30:33,458 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：rag_summarize
+2026-05-16 19:30:33,459 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{'query': '扫地机器人无法回充时如何重启和查看故障提示'}
+2026-05-16 19:30:37,160 - agent - INFO - middleware.py:24 - [tool monitor]工具rag_summarize调用成功
+2026-05-16 19:30:37,161 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有5条消息。
+2026-05-16 19:30:37,162 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 扫地机器人无法回充时，可尝试重启设备以重置清扫模式；若仍无反应，检查是否因电量低于20%而优先回充。查看故障提示可结合指示灯状态及APP信息：确认自动回充功能是否开启、充电座位置是否正确、回充传感器是否清洁，并检查电源适配器、电池安装及机身温度等硬件状态。
+2026-05-16 19:33:20,417 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有5条消息。
+2026-05-16 19:33:20,422 - agent - DEBUG - middleware.py:42 - [log_before_model]HumanMessage | 请根据用户数据生成一份个性化使用报告
+2026-05-16 19:33:24,090 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：get_user_id
+2026-05-16 19:33:24,090 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{}
+2026-05-16 19:33:24,090 - agent - INFO - middleware.py:24 - [tool monitor]工具get_user_id调用成功
+2026-05-16 19:33:24,092 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有7条消息。
+2026-05-16 19:33:24,092 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 1009
+2026-05-16 19:33:26,389 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：get_current_month
+2026-05-16 19:33:26,389 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{}
+2026-05-16 19:33:26,389 - agent - INFO - middleware.py:24 - [tool monitor]工具get_current_month调用成功
+2026-05-16 19:33:26,392 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有9条消息。
+2026-05-16 19:33:26,392 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 2025-01
+2026-05-16 19:33:28,651 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：fill_context_for_report
+2026-05-16 19:33:28,651 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{}
+2026-05-16 19:33:28,651 - agent - INFO - middleware.py:24 - [tool monitor]工具fill_context_for_report调用成功
+2026-05-16 19:33:28,654 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有11条消息。
+2026-05-16 19:33:28,655 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | fill_context_for_report已调用
+2026-05-16 19:33:32,722 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：fetch_external_data
+2026-05-16 19:33:32,722 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{'user_id': '1009', 'month': '2025-01'}
+2026-05-16 19:33:32,725 - agent - INFO - middleware.py:24 - [tool monitor]工具fetch_external_data调用成功
+2026-05-16 19:33:32,727 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有13条消息。
+2026-05-16 19:33:32,727 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | {"特征": "80㎡两居 | 养宠 | 仿实木", "效率": "宠物毛发清理:85%\\n自动回充成功率:92%", "耗材": "胶刷缠绕:中度\\n滤网更换:剩余30天", "对比": "养宠家庭中清洁效率处于中等水平"}
+2026-05-16 19:33:35,913 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：rag_summarize
+2026-05-16 19:33:35,913 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{'query': '养宠家庭扫地机器人使用建议'}
+2026-05-16 19:33:40,093 - agent - INFO - middleware.py:24 - [tool monitor]工具rag_summarize调用成功
+2026-05-16 19:33:40,096 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有15条消息。
+2026-05-16 19:33:40,096 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 养宠家庭使用扫地机器人时，应更换防缠绕主刷和高密度滤网，开启“宠物模式”以增大吸力并提高清扫频次；每次清扫后需全面清理主刷、尘盒和拖布；每日清理尘盒和滚刷，检查边刷旋转是否卡顿；若沾到宠物粪便，立即用湿巾清理并用中性洗涤剂擦拭；每周对机器人进行除味消毒，并将耗材更换周期缩短50%。
+2026-05-16 19:33:43,778 - agent - INFO - middleware.py:19 - [tool monitor]执行工具：rag_summarize
+2026-05-16 19:33:43,779 - agent - INFO - middleware.py:20 - [tool monitor]传入参数：{'query': '扫地机器人耗材维护周期'}
+2026-05-16 19:33:48,464 - agent - INFO - middleware.py:24 - [tool monitor]工具rag_summarize调用成功
+2026-05-16 19:33:48,465 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有17条消息。
+2026-05-16 19:33:48,466 - agent - DEBUG - middleware.py:42 - [log_before_model]ToolMessage | 扫地机器人耗材维护周期如下：HEPA滤网每3-6个月更换，可每周刷尘、每1-2个月清水冲洗晾干；主刷在普通家庭每3-6个月更换，宠物家庭或长毛地毯环境每1-3个月更换，磨损变形需立即更换；边刷一般每2-3个月更换一次，多尘环境每月更换，刷毛磨损至小于1cm、变形或断裂时应及时更换。宠物家庭耗材更换周期需缩短50%。
+2026-05-16 19:36:27,155 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有7条消息。
+2026-05-16 19:36:27,159 - agent - DEBUG - middleware.py:42 - [log_before_model]HumanMessage | 你之前回复的，检查自动回充设置, 你还记得么，不记得就回答不记得
+2026-05-16 19:36:47,734 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有7条消息。
+2026-05-16 19:36:47,734 - agent - DEBUG - middleware.py:42 - [log_before_model]HumanMessage | 你是谁
+2026-05-16 19:37:26,906 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有7条消息。
+2026-05-16 19:37:26,906 - agent - DEBUG - middleware.py:42 - [log_before_model]HumanMessage | 核对充电座位置：查看地图中充电座的位置是否被移动或修改过，若地图信息与实际不符，可能导致机器人找不到充电桩。 在你的对话历史中，有没有提到
+2026-05-16 19:38:06,783 - agent - INFO - middleware.py:40 - [log_before_model]即将调用模型，带有7条消息。
+2026-05-16 19:38:06,783 - agent - DEBUG - middleware.py:42 - [log_before_model]HumanMessage | 在你的对话历史中，保留了几轮对话，提到了什么
