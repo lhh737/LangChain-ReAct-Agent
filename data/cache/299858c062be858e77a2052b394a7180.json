@@ -24,28 +24,6 @@
     "semantic_scholar_id": ""
   },
   {
-    "title": "Security and privacy in LLMs: A comprehensive survey of threats and mitigation strategies.",
-    "authors": [
-      "Aymen Dia Eddine Berini",
-      "Norziana Jamil",
-      "Ala-Eddine Benrazek",
-      "Abderrahmane Lakas",
-      "Leila Ismail",
-      "Mohamed Amine Ferrag",
-      "Kwok-Yan Lam"
-    ],
-    "year": "2026",
-    "venue": "Inf. Fusion",
-    "doi": "",
-    "url": "https://doi.org/10.1016/j.inffus.2026.104241",
-    "abstract": "",
-    "citation_count": 0,
-    "source": "DBLP",
-    "arxiv_id": "",
-    "openalex_id": "",
-    "semantic_scholar_id": ""
-  },
-  {
     "title": "LLM agents security duality: a comprehensive survey of self-security and empowered cybersecurity.",
     "authors": [
       "Yiwei Xu",
@@ -70,21 +48,19 @@
     "semantic_scholar_id": ""
   },
   {
-    "title": "AI-Augmented SOC: A Survey of LLMs and Agents for Security Automation.",
+    "title": "The Emerged Security and Privacy of LLM Agent: A Survey with Case Studies.",
     "authors": [
-      "Siddhant Srinivas",
-      "Brandon Kirk",
-      "Julissa Zendejas",
-      "Michael Espino",
-      "Matthew Boskovich",
-      "Abdul Bari",
-      "Khalil Dajani",
-      "Nabeel Alzahrani"
+      "Feng He",
+      "Tianqing Zhu",
+      "Dayong Ye",
+      "Bo Liu 0001",
+      "Wanlei Zhou 0001",
+      "Philip S. Yu"
     ],
-    "year": "2025",
-    "venue": "J. Cybersecur. Priv.",
+    "year": "2026",
+    "venue": "ACM Comput. Surv.",
     "doi": "",
-    "url": "https://doi.org/10.3390/jcp5040095",
+    "url": "https://doi.org/10.1145/3773080",
     "abstract": "",
     "citation_count": 0,
     "source": "DBLP",
@@ -93,18 +69,41 @@
     "semantic_scholar_id": ""
   },
   {
-    "title": "Structuring Security: A Survey of Cybersecurity Ontologies, Semantic Log Processing, and LLMs Application.",
+    "title": "LLMs in Software Security: A Survey of Vulnerability Detection Techniques and Insights.",
     "authors": [
-      "Bruno Lourenço",
-      "Pedro Adão",
-      "João F. Ferreira 0003",
-      "Mario Monteiro Marques",
-      "Cátia Vaz"
+      "Ze Sheng",
+      "Zhicheng Chen",
+      "Shuning Gu",
+      "Heqing Huang 0002",
+      "Guofei Gu",
+      "Jeff Huang 0001"
     ],
-    "year": "2025",
-    "venue": "CoRR",
+    "year": "2026",
+    "venue": "ACM Comput. Surv.",
     "doi": "",
-    "url": "https://doi.org/10.48550/arXiv.2510.16610",
+    "url": "https://doi.org/10.1145/3769082",
+    "abstract": "",
+    "citation_count": 0,
+    "source": "DBLP",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Security and privacy in LLMs: A comprehensive survey of threats and mitigation strategies.",
+    "authors": [
+      "Aymen Dia Eddine Berini",
+      "Norziana Jamil",
+      "Ala-Eddine Benrazek",
+      "Abderrahmane Lakas",
+      "Leila Ismail",
+      "Mohamed Amine Ferrag",
+      "Kwok-Yan Lam"
+    ],
+    "year": "2026",
+    "venue": "Inf. Fusion",
+    "doi": "",
+    "url": "https://doi.org/10.1016/j.inffus.2026.104241",
     "abstract": "",
     "citation_count": 0,
     "source": "DBLP",

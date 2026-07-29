@@ -1,0 +1,82 @@
+[
+  {
+    "title": "Multimodal Large Language Models in Health Care: Applications, Challenges, and Future Outlook",
+    "authors": [
+      "Rawan AlSaad",
+      "Alaa Abd‐Alrazaq",
+      "Sabri Boughorbel",
+      "Arfan Ahmed",
+      "Max-Antoine Renault"
+    ],
+    "year": "2024",
+    "venue": "Journal of Medical Internet Research",
+    "doi": "https://doi.org/10.2196/59505",
+    "url": "https://doi.org/10.2196/59505",
+    "abstract": "",
+    "citation_count": 263,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4402155831",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Scientific Large Language Models: A Survey on Biological &amp; Chemical Domains",
+    "authors": [
+      "Qiang Zhang",
+      "Keyang Ding",
+      "Tianwen Lyv",
+      "Xinda Wang",
+      "Qingyu Yin"
+    ],
+    "year": "2024",
+    "venue": "arXiv (Cornell University)",
+    "doi": "https://doi.org/10.48550/arxiv.2401.14656",
+    "url": "http://arxiv.org/abs/2401.14656",
+    "abstract": "",
+    "citation_count": 34,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4391335129",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Nicheformer: a foundation model for single-cell and spatial omics",
+    "authors": [
+      "Anna C. Schaar",
+      "Alejandro Tejada-Lapuerta",
+      "Giovanni Palla",
+      "Robert M. Gutgesell",
+      "Lennard Halle"
+    ],
+    "year": "2024",
+    "venue": "bioRxiv (Cold Spring Harbor Laboratory)",
+    "doi": "https://doi.org/10.1101/2024.04.15.589472",
+    "url": "https://doi.org/10.1101/2024.04.15.589472",
+    "abstract": "",
+    "citation_count": 40,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4394930851",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "DeepSpaceDB: a spatial transcriptomics atlas for interactive in-depth analysis of tissues and tissue microenvironments",
+    "authors": [
+      "Vladyslav Honcharuk",
+      "Afeefa Zainab",
+      "Yoshiya Horimoto",
+      "Keiko Takemoto",
+      "Diego Díez"
+    ],
+    "year": "2025",
+    "venue": "Nucleic Acids Research",
+    "doi": "https://doi.org/10.1093/nar/gkaf1117",
+    "url": "https://doi.org/10.1093/nar/gkaf1117",
+    "abstract": "",
+    "citation_count": 5,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4415678708",
+    "semantic_scholar_id": ""
+  }
+]

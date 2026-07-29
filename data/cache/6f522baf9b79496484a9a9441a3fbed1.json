@@ -1,0 +1,82 @@
+[
+  {
+    "title": "LLM Security in Cloud-Native Architectures: A Comprehensive Survey of Attacks, Defenses, and Operational Challenges",
+    "authors": [
+      "Muhammad Yawar Malik"
+    ],
+    "year": "2026",
+    "venue": "",
+    "doi": "10.36227/techrxiv.177130593.35890269/v1",
+    "url": "https://doi.org/10.36227/techrxiv.177130593.35890269/v1",
+    "abstract": "The rapid adoption of Large Language Models (LLMs) in cloud-native environments has introduced unprecedented security challenges that traditional cybersecurity frameworks fail to adequately address. This survey provides a comprehensive analysis of LLM security threats in cloud infrastructures, examining 65 recent studies and real-world incidents from 2023-2025. We propose a novel taxonomy that categorizes threats into four primary dimensions: Infrastructure Security (credential theft, resource abuse), Application Security (prompt injection, data exfiltration), Model Security (model poisoning, adversarial attacks), and Supply Chain Security (dependency vulnerabilities, malicious packages). Our analysis reveals that LLMjacking attacks have increased 10x in 2024, with single incidents costing victims up to $100,000 per day. We identify critical research gaps, including the lack of standardized security frameworks for LLM-integrated applications and insufficient real-time threat detection capabilities. This survey synthesizes current defensive strategies, evaluates their effectiveness, and proposes future research directions toward achieving secure and trustworthy LLM deployments in cloud environments. Our findings provide actionable insights for security architects, cloud engineers, and researchers working to establish robust security postures for AI-powered cloud applications.",
+    "citation_count": 0,
+    "source": "Crossref",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Survey Trends using LLM Models",
+    "authors": [
+      "Tasvi Adappa"
+    ],
+    "year": "2024",
+    "venue": "",
+    "doi": "10.31224/3977",
+    "url": "https://doi.org/10.31224/3977",
+    "abstract": "This report outlines a comprehensive analysis of survey papers within a specific dataset using various data science techniques. The primary objective is to explore, manipulate, and evaluate the data to understand the trends and taxonomy distributions of surveys in this domain. Data exploration began with a time-series analysis of survey releases, visualizing trends over time. Taxonomy distributions were then examined using bar charts and pie charts to uncover the most frequent categories. In the data manipulation phase, we constructed a feature matrix by applying TF-IDF vectorization to the text fields (titles and summaries) and using one-hot encoding for the categorical variables. These features were then normalized and split into training and testing sets to prepare for model evaluation. The data evaluation process employed a Random Forest classifier to predict the taxonomy of surveys based on the features extracted. Performance was measured using accuracy, precision, recall, and F1-score, with the model achieving an accuracy of 34.48 percentage. Although the model's performance indicates room for improvement, this analysis demonstrates the potential of machine learning in automating the classification of survey papers based on their content. This study illustrates how data science techniques, including natural language processing (NLP) and machine learning, can be applied to understand trends, perform feature engineering, and evaluate models in the context of survey data. Future work could involve the use of more advanced models and feature selection techniques to enhance predictive accuracy.",
+    "citation_count": 0,
+    "source": "Crossref",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Teaching LLM Security through Containerized Vulnerable Applications",
+    "authors": [
+      "Katarzyna Mazur"
+    ],
+    "year": "2026",
+    "venue": "Proceedings of the 18th International Conference on Computer Supported Education",
+    "doi": "10.5220/0014950400004021",
+    "url": "https://doi.org/10.5220/0014950400004021",
+    "abstract": "",
+    "citation_count": 0,
+    "source": "Crossref",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "LLM Survey Analysis Using Random Forest",
+    "authors": [
+      "Priyanka Singla"
+    ],
+    "year": "2024",
+    "venue": "",
+    "doi": "10.31224/3956",
+    "url": "https://doi.org/10.31224/3956",
+    "abstract": "This project investigates the application of a Random Forest Classifier for analyzing metadata from survey papers on large language models (LLMs), a rapidly growing area within AI. The goal is to assist new researchers by providing insights into the trends and patterns in LLM survey publications. Through a structured workflow—comprising data loading, exploration, manipulation, and visualization—key attributes such as release dates, categories, and taxonomies were analyzed. Techniques like TF-IDF vectorization, one-hot encoding, and feature scaling were employed to construct a robust feature matrix. Hyperparameter tuning using grid search optimized the classifier’s performance. Although the model achieved perfect training accuracy, a lower test accuracy (0.39) indicated overfitting, likely caused by dataset imbalance. With a best cross-validation score of 0.26, future improvements will focus on addressing data imbalance, enhancing feature engineering, and exploring alternative models to boost performance. The project highlights trends in LLM research and suggests paths for enhancing model accuracy.",
+    "citation_count": 0,
+    "source": "Crossref",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "A Survey on IoT–LLM Integration for Smart Cities: Intelligence, Security, and Sustainability",
+    "authors": [
+      "Tianle Wang"
+    ],
+    "year": "2026",
+    "venue": "Proceedings of the 2025 International Conference on Artificial Intelligence and Sustainable Development",
+    "doi": "10.1145/3786484.3786493",
+    "url": "https://doi.org/10.1145/3786484.3786493",
+    "abstract": "",
+    "citation_count": 0,
+    "source": "Crossref",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  }
+]

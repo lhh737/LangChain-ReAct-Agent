@@ -1,0 +1,99 @@
+[
+  {
+    "title": "Revolutionizing personalized medicine with generative AI: a systematic review",
+    "authors": [
+      "Isaias Ghebrehiwet",
+      "Nazar Zaki",
+      "Rafat Damseh",
+      "Mohd Saberi Mohamad"
+    ],
+    "year": "2024",
+    "venue": "Artificial Intelligence Review",
+    "doi": "https://doi.org/10.1007/s10462-024-10768-5",
+    "url": "https://doi.org/10.1007/s10462-024-10768-5",
+    "abstract": "",
+    "citation_count": 125,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4395462076",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Reshaping the systemic tumor immune environment (STIE) and tumor immune microenvironment (TIME) to enhance immunotherapy efficacy in solid tumors",
+    "authors": [
+      "Liangliang Xu",
+      "Chang Zou",
+      "Shanshan Zhang",
+      "Timothy Shun Man Chu",
+      "Yan Zhang"
+    ],
+    "year": "2022",
+    "venue": "Journal of Hematology & Oncology",
+    "doi": "https://doi.org/10.1186/s13045-022-01307-2",
+    "url": "https://doi.org/10.1186/s13045-022-01307-2",
+    "abstract": "",
+    "citation_count": 231,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4284675284",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Multimodal Large Language Models in Health Care: Applications, Challenges, and Future Outlook",
+    "authors": [
+      "Rawan AlSaad",
+      "Alaa Abd‐Alrazaq",
+      "Sabri Boughorbel",
+      "Arfan Ahmed",
+      "Max-Antoine Renault"
+    ],
+    "year": "2024",
+    "venue": "Journal of Medical Internet Research",
+    "doi": "https://doi.org/10.2196/59505",
+    "url": "https://doi.org/10.2196/59505",
+    "abstract": "",
+    "citation_count": 263,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4402155831",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "A Comprehensive Review on Synergy of Multi-Modal Data and AI Technologies in Medical Diagnosis",
+    "authors": [
+      "Xi Xu",
+      "Jianqiang Li",
+      "Zhichao Zhu",
+      "Linna Zhao",
+      "Huina Wang"
+    ],
+    "year": "2024",
+    "venue": "Bioengineering",
+    "doi": "https://doi.org/10.3390/bioengineering11030219",
+    "url": "https://doi.org/10.3390/bioengineering11030219",
+    "abstract": "",
+    "citation_count": 209,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4392168796",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "The diversification of methods for studying cell–cell interactions and communication",
+    "authors": [
+      "Erick Armingol",
+      "Hratch Baghdassarian",
+      "Nathan E. Lewis"
+    ],
+    "year": "2024",
+    "venue": "Nature Reviews Genetics",
+    "doi": "https://doi.org/10.1038/s41576-023-00685-8",
+    "url": "https://doi.org/10.1038/s41576-023-00685-8",
+    "abstract": "",
+    "citation_count": 190,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4390974497",
+    "semantic_scholar_id": ""
+  }
+]

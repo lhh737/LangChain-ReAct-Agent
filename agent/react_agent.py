@@ -8,8 +8,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from typing import Generator
 
-from langgraph.prebuilt import create_react_agent
-from langgraph.errors import GraphRecursionError
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_core.output_parsers import StrOutputParser
 
@@ -21,11 +19,15 @@ from agent.intent_router import IntentRouter, Intent
 from agent.retrieval_state import AgentRetrievalState
 from agent.execution_policy import AgentExecutionPolicy
 from agent.memory_manager import ShortTermMemory, CumulativeSummary, FactStore
-from agent.tool_wrappers import TOOL_BUDGET_EXHAUSTED, KB_SEARCH_BLOCKED, INVALID_MARKERS
 from agent.tools.agent_tools import (
     academic_search, search_academic_papers, fetch_paper_metadata,
     fetch_citation_info, compare_papers, mark_paper_not_in_kb,
-    start_literature_review, _set_shared_state, _search_academic_papers_internal,
+    start_literature_review, _search_academic_papers_internal,
+
+)
+from agent.retrieval.retrieval_pipeline import search_academic_papers_core
+from agent.evidence_budgeter import (
+    EvidenceBudgeter, TokenCounter, build_local_blocks, build_online_blocks,
 )
 from agent.tools.middleware import AgentCallback
 
@@ -56,40 +58,9 @@ class ReactAgent:
 
         # per-execution 状态（在 execute_stream 中重置）
         self._retrieval_state: AgentRetrievalState | None = None
-        self._retrieval_state_ref: list = [None]
         self._execution_policy: AgentExecutionPolicy | None = None
-        self._policy_holder: list = [None]
         self._current_intent: Intent = Intent.QA
 
-        # 工具列表（不做函数包装，预算/在线门控在工具内部检查）
-        self.tools = [
-            academic_search, search_academic_papers, fetch_paper_metadata,
-            fetch_citation_info, compare_papers, mark_paper_not_in_kb,
-            start_literature_review,
-        ]
-
-        # state_modifier callable — 动态选择 prompt + 终止检测
-        def _prompt_fn(state: dict) -> list[SystemMessage]:
-            for msg in state.get("messages", []):
-                content = getattr(msg, "content", "") or ""
-                if isinstance(content, str) and "__REVIEW_MODE__:" in content:
-                    self._current_intent = Intent.REVIEW
-                    break
-            policy = self._policy_holder[0]
-            if policy is not None:
-                policy.round_counter += 1
-            existing = list(state.get("messages", []))
-            msgs = [SystemMessage(content=self._load_prompt(self._current_intent))]
-            if policy is not None and policy.should_stop():
-                policy.stop_yielded = True
-                msgs.append(SystemMessage(content="STOP: 信息收集完毕，请直接回答用户问题。不要调用更多工具。"))
-            return msgs + existing
-
-        self.agent = create_react_agent(
-            model=chat_model,
-            tools=self.tools,
-            state_modifier=_prompt_fn,
-        )
 
     def _load_prompt(self, intent: Intent) -> str:
         file_map = {
@@ -187,24 +158,71 @@ class ReactAgent:
         return re.sub(r'^\[\d+\]\s*', '', text, flags=re.MULTILINE)
 
     @staticmethod
-    def _scored_to_papers_meta() -> list[dict]:
-        """从 online_pipeline 获取最近一次 scored papers 的结构化元数据"""
-        from agent.tools.agent_tools import online_pipeline
-        try:
-            scored = online_pipeline.get_last_scored()
-        except Exception:
-            return []
-        papers = []
-        for paper, score in scored[:5]:
-            papers.append({
-                "title": paper.title,
-                "authors": paper.authors[:3] if paper.authors else [],
+    def _build_review_online_blocks(
+        scored_results,
+        max_papers: int = 30,
+    ) -> list[dict]:
+        """从 scored_results 构建独立 EvidenceBlock 输入列表。
+
+        每篇论文一个独立 block，包含完整引用元数据。
+        去重、过滤无摘要论文、保留质量分、上限截断。
+        """
+        from agent.retrieval.paper_validator import PaperIdentityValidator
+
+        blocks = []
+        seen: set[str] = set()
+
+        ranked = sorted(
+            scored_results,
+            key=lambda item: item[1],
+            reverse=True,
+        )
+
+        for paper, score in ranked:
+            title = (paper.title or "").strip()
+            abstract = (paper.abstract or "").strip()
+            doi = (paper.doi or "").strip()
+            url = (paper.url or "").strip()
+
+            # Dedup key: prefer DOI, fallback to normalized title
+            dedup_key = (
+                PaperIdentityValidator._normalize_doi(doi)
+                if doi
+                else PaperIdentityValidator._normalize_title(title)
+            )
+            if not dedup_key or dedup_key in seen:
+                continue
+            seen.add(dedup_key)
+
+            # Skip papers without evidence text
+            if not abstract:
+                logger.info(
+                    "[ReviewEvidence] skip paper without evidence text: %s",
+                    title,
+                )
+                continue
+
+            blocks.append({
+                "title": title or "未命名论文",
+                "source": paper.source or "在线学术检索",
+                "content": abstract,
+                "quality_score": float(score),
+                "authors": list(paper.authors or []),
                 "year": paper.year or "",
-                "source": paper.source,
-                "score": round(score, 3),
-                "abstract": (paper.abstract or "")[:150],
+                "doi": doi,
+                "url": url,
+                "evidence_type": "abstract",
             })
-        return papers
+
+            if len(blocks) >= max_papers:
+                break
+
+        logger.info(
+            "[ReviewEvidence] scored=%d candidates=%d max=%d",
+            len(scored_results), len(blocks), max_papers,
+        )
+        return blocks
+
 
     # ── COMPARE: 对比维度提取 + 逐 subject 证据判断 ──
 
@@ -314,23 +332,113 @@ class ReactAgent:
 
         sufficient = "SUFFICIENT" in judgment.upper() and "INSUFFICIENT" not in judgment.upper()
 
+        # Multi-format parsing: relevant + irrelevant
         relevant_indices: set[int] = set()
-        for m in re.finditer(r"\[(\d+)\]\s*\[相关\]", judgment):
-            relevant_indices.add(int(m.group(1)))
+        irrelevant_indices: set[int] = set()
+
+        # Patterns ordered: try "不相关" before "相关" to avoid substring match
+        irrelevant_patterns = [
+            r"\[(\d+)\]\s*\[不相关\]",
+            r"\[(\d+)\]\s*不相关",
+            r"^\s*(\d+)[\.、:：]\s*\[?不相关\]?",
+        ]
+        for pat in irrelevant_patterns:
+            for m in re.finditer(pat, judgment, re.MULTILINE | re.IGNORECASE):
+                irrelevant_indices.add(int(m.group(1)))
+
+        relevant_patterns = [
+            r"\[(\d+)\]\s*\[相关\]",
+            r"\[(\d+)\]\s*相关",
+            r"^\s*(\d+)[\.、:：]\s*\[?相关\]?",
+        ]
+        # Only mark as relevant if not already marked irrelevant
+        for pat in relevant_patterns:
+            for m in re.finditer(pat, judgment, re.MULTILINE | re.IGNORECASE):
+                idx = int(m.group(1))
+                if idx not in irrelevant_indices:
+                    relevant_indices.add(idx)
 
         relevant_chunks = [chunks[i - 1] for i in sorted(relevant_indices) if 1 <= i <= len(chunks)]
+        irrelevant_chunks = [chunks[i - 1] for i in sorted(irrelevant_indices) if 1 <= i <= len(chunks)]
+
+        # Coverage check
+        expected = set(range(1, len(chunks) + 1))
+        parsed = relevant_indices | irrelevant_indices
+        unparsed_indices = expected - parsed
+        unparsed_chunks = [chunks[i - 1] for i in sorted(unparsed_indices) if 1 <= i <= len(chunks)]
+        parse_ok = len(unparsed_indices) == 0
 
         refine_query = query
         m_refine = re.search(r"REFINE_QUERY:\s*(.+?)(?:\n|$)", judgment, re.IGNORECASE)
         if m_refine:
-            refine_query = m_refine.group(1).strip()
+            raw_rq = m_refine.group(1).strip()
+            # Reject placeholder values
+            if raw_rq and raw_rq not in ("<english_query>", "<query>", "english_query", "query"):
+                refine_query = raw_rq
+            else:
+                logger.warning(
+                    "[JudgeRefine] placeholder detected in refine_query: %r, using original query",
+                    raw_rq,
+                )
 
-        return {
+        # Invariant: sufficient=True + zero relevant_chunks is invalid
+        judge_failed = False
+        if sufficient and not relevant_chunks and chunks:
+            logger.error(
+                "[JudgeInvariant] sufficient=True but relevant_chunks is empty; "
+                "forcing sufficient=False. raw_judgment=%r",
+                judgment[:500],
+            )
+            sufficient = False
+            parse_ok = False
+            judge_failed = True
+
+        # Also treat complete parse failure as judge_failed
+        if not relevant_indices and not irrelevant_indices and chunks:
+            judge_failed = True
+
+        result = {
             "sufficient": sufficient,
-            "relevant_chunks": relevant_chunks if relevant_chunks else chunks,
+            "relevant_chunks": relevant_chunks,
+            "irrelevant_chunks": irrelevant_chunks,
+            "unparsed_chunks": unparsed_chunks,
             "refine_query": refine_query,
             "judgment": judgment,
+            "parse_ok": parse_ok,
+            "judge_failed": judge_failed,
+            "raw_response": judgment,
         }
+        logger.info(
+            "[QATrace][judge] sufficient=%s relevant=%d irrelevant=%d unparsed=%d "
+            "parse_ok=%s judge_failed=%s refine_query=%r chunks_input=%d",
+            sufficient, len(relevant_chunks), len(irrelevant_chunks), len(unparsed_chunks),
+            parse_ok, judge_failed, (refine_query or "")[:200], len(chunks),
+        )
+        if relevant_chunks:
+            logger.info("[QATrace][judge_relevant] %d chunks retained", len(relevant_chunks))
+            for idx, chunk in enumerate(relevant_chunks[:5], 1):
+                meta = chunk.metadata
+                logger.info(
+                    "[QATrace][judge_relevant:%d] title=%r section=%r page=%r",
+                    idx,
+                    meta.get("paper_title", ""),
+                    meta.get("section", ""),
+                    meta.get("page_start") or meta.get("page", ""),
+                )
+        if irrelevant_chunks:
+            logger.info("[QATrace][judge_irrelevant] %d chunks dropped", len(irrelevant_chunks))
+        if unparsed_chunks:
+            logger.warning(
+                "[QATrace][judge_unparsed] %d chunks could not be classified: %s",
+                len(unparsed_chunks),
+                sorted(unparsed_indices),
+            )
+
+        logger.info(
+            "[QATrace][judge_raw] %r",
+            judgment[:500],
+        )
+        return result
 
     # ── Generate Answer from Raw Chunks ──
 
@@ -341,60 +449,72 @@ class ReactAgent:
     ) -> Generator[dict, None, None]:
         """从 raw chunks + online_blocks 构建统一编号引用上下文，生成答案。
         online_blocks: [{"title": str, "source": str, "content": str}, ...]
-        max_tokens 控制上下文整体 token 上限（~2 chars/token 估算）。
+        max_tokens 控制上下文整体 token 上限。
         memory_context 为相关性过滤后的历史对话 + 长期事实。"""
         online_blocks = online_blocks or []
-        # 清除在线检索输出中的 [N] 编号，避免与统一编号冲突
         for block in online_blocks:
             block["content"] = self._strip_pipeline_numbering(block.get("content", ""))
 
+        logger.info("[QATrace][before_generate] local_chunks=%d online_blocks=%d extra_context_len=%d",
+                    len(chunks), len(online_blocks), len(extra_context or ""))
+
         if not chunks and not extra_context and not online_blocks:
+            logger.warning("[QATrace][branch] no_evidence all empty")
             yield {"type": "text", "content": "[系统] 无可用检索结果", "name": "system"}
             return
 
         # 条数上限
         ctx_chunks = chunks[:max_chunks] if max_chunks > 0 else chunks
 
-        # 构建统一编号的引用块：本地 chunk → [1..N]，在线 block → [N+1..N+M]
-        lines: list[str] = []
-        for i, doc in enumerate(ctx_chunks, 1):
-            meta = doc.metadata
-            title = meta.get("paper_title", "未知")
-            section = meta.get("section", "未知")
-            ps = meta.get("page_start") or meta.get("page")
-            pe = meta.get("page_end") or meta.get("page")
-            if ps and pe:
-                page = f"p.{ps}" if ps == pe else f"pp.{ps}-{pe}"
-            else:
-                page = "未知"
-            lines.append(f"[{i}] 来源：《{title}》；章节：{section}；页码：{page}；内容：{doc.page_content}")
+        # ── EvidenceBudgeter: 分层 token 预算分配 ──
+        token_counter = TokenCounter()
+        local_evidence = build_local_blocks(ctx_chunks, token_counter)
+        online_evidence = build_online_blocks(online_blocks, token_counter)
 
-        online_start = len(ctx_chunks) + 1
-        for i, block in enumerate(online_blocks, online_start):
-            title = block.get("title", "未知")
-            source = block.get("source", "在线")
-            content = block.get("content", "")
-            lines.append(f"[{i}] [在线]《{title}》| 来源：{source}\n{content}")
+        # === CitationTrace: EvidenceBlock after build_online_blocks ===
+        logger.info("[CitationTrace][evidence_blocks] count=%d", len(online_evidence))
+        for idx, block in enumerate(online_evidence):
+            logger.info(
+                "[CitationTrace][evidence_block:%d] id=%s title=%r raw_len=%d newline_count=%d",
+                idx, block.evidence_id, block.citation_meta.get("title", "未知"),
+                len(block.raw_content or ""), (block.raw_content or "").count("\n"),
+            )
+        # === end CitationTrace ===
 
-        context = ""
-        if memory_context:
-            context += f"[对话上下文]\n{memory_context}\n\n"
-        context += "\n\n".join(lines)
+        online_available = bool(online_blocks)
 
-        # 未编号的额外上下文（如 compare_papers 工具结果）追加在末尾
-        if extra_context:
-            context += f"\n\n---\n{extra_context}"
+        budgeter = EvidenceBudgeter()
+        system_prompt = self._load_prompt(intent)
+        allocation = budgeter.allocate(
+            system_prompt=system_prompt,
+            query=query,
+            local_blocks=local_evidence,
+            online_blocks=online_evidence,
+            memory_context=memory_context,
+            extra_context=extra_context,
+            online_available=online_available,
+        )
 
-        # 整体截断：超出 max_tokens 估算字符数时从末尾截断
-        char_limit = max_tokens * 2
-        if len(context) > char_limit:
-            cut = context.rfind("\n\n", 0, char_limit)
-            if cut < 0 or cut < char_limit * 0.6:
-                cut = char_limit
-            context = context[:cut] + "\n\n...[上下文超出 token 限制，后续内容已截断]"
-            logger.info(f"[Truncate] 上下文截断于 ~{cut} chars, limit={char_limit}")
+        # === CitationTrace: after EvidenceBudgeter.allocate() ===
+        logger.info(
+            "[CitationTrace][allocation] selected=%d references=%d context_len=%d context_newlines=%d",
+            len(allocation.selected_blocks), len(allocation.references),
+            len(allocation.context), allocation.context.count("\n"),
+        )
+        for idx, ref_text in enumerate(allocation.references):
+            logger.info(
+                "[CitationTrace][reference:%d] len=%d newline_count=%d",
+                idx + 1, len(ref_text), ref_text.count("\n"),
+            )
+        logger.info(
+            "[CitationTrace][allocation_context] len=%d",
+            len(allocation.context),
+        )
+        # === end CitationTrace ===
 
-        system_msg = SystemMessage(content=self._load_prompt(intent))
+        # ── 使用 budgeter 分配结果 ──
+        context = allocation.context
+        system_msg = SystemMessage(content=system_prompt)
         user_msg = HumanMessage(content=f"用户问题：{query}\n\n检索结果：\n{context}")
 
         collected_text: list[str] = []
@@ -406,7 +526,7 @@ class ReactAgent:
         final_text = "".join(collected_text)
 
         # 引用校验（统一编号：本地 N 个 + 在线 M 个）
-        max_n = len(ctx_chunks) + len(online_blocks)
+        max_n = len(allocation.selected_blocks)
         cited = set(int(m) for m in re.findall(r"\[(\d+)\]", final_text))
         invalid = sorted(n for n in cited if n < 1 or n > max_n)
         if invalid:
@@ -424,27 +544,37 @@ class ReactAgent:
             yield {"type": "text", "content": "\n[系统提示] 回答中包含无效引用占位符，已拦截。\n", "name": "system"}
             return
 
-        # 输出引用元信息映射表（含在线块）
+        # 输出引用来源（基于 allocation.selected_blocks 的完整渲染）
         if max_n > 0:
             ref_lines = []
-            for i, doc in enumerate(ctx_chunks, 1):
-                meta = doc.metadata
-                title = meta.get("paper_title", "未知")
-                section = meta.get("section", "未知")
-                ps = meta.get("page_start") or meta.get("page")
-                pe = meta.get("page_end") or meta.get("page")
-                if ps and pe:
-                    page = f"p.{ps}" if ps == pe else f"pp.{ps}-{pe}"
-                else:
-                    page = "未知"
-                snippet = doc.page_content.replace("\n", " ")
-                ref_lines.append(f"[{i}] 《{title}》| {section} | {page} | {snippet}")
-            for i, block in enumerate(online_blocks, online_start):
-                title = block.get("title", "未知")
-                source = block.get("source", "在线")
-                snippet = block.get("content", "").replace("\n", " ")
-                ref_lines.append(f"[{i}] [在线]《{title}》| {source} | {snippet}")
-            yield {"type": "references", "content": "\n\n".join(ref_lines), "name": "system"}
+            structured_refs = []
+            for ref_num, block in enumerate(allocation.selected_blocks, 1):
+                rendered = block.render(ref_num)
+                ref_lines.append(rendered)
+                meta = block.citation_meta
+                structured_refs.append({
+                    "index": ref_num,
+                    "title": meta.get("title", "未知"),
+                    "source_type": block.source_type,
+                    "source": meta.get("source", "未知"),
+                    "authors": meta.get("authors", []),
+                    "year": meta.get("year", ""),
+                    "doi": meta.get("doi", ""),
+                    "url": meta.get("url", ""),
+                    "evidence_type": meta.get("evidence_type", "abstract"),
+                    "evidence_text": block.raw_content,
+                })
+            reference_content = "\n\n".join(ref_lines)
+            logger.info(
+                "[CitationTrace][yield_references] content_len=%d newline_count=%d structured_count=%d",
+                len(reference_content), reference_content.count("\n"), len(structured_refs),
+            )
+            yield {
+                "type": "references",
+                "content": reference_content,
+                "references": structured_refs,
+                "name": "system",
+            }
 
         # 记忆更新
         if final_text.strip():
@@ -478,19 +608,19 @@ class ReactAgent:
         missing = self._match_kb_missing(subject if subject else query)
         if missing:
             online_q = missing.get("online_query") or missing.get("display_name", search_query)
-            online_result = _search_academic_papers_internal(online_q, candidate=subject if subject else "")
+            online_result = search_academic_papers_core(online_q, candidate=subject if subject else "")
             self.callback.tool_invocation_log.append({
-                "name": "search_academic_papers", "output": online_result,
+                "name": "search_academic_papers", "output": online_result.text,
                 "elapsed": 0, "status": "success",
             })
             guards["online_done"] = True
             yield {
-                "type": "tool", "content": online_result[:500], "name": "search_academic_papers",
+                "type": "tool", "content": online_result.text[:500], "name": "search_academic_papers",
                 "query": online_q, "elapsed": 0,
-                "meta": {"papers": self._scored_to_papers_meta()},
+                "meta": {"papers": online_result.papers_meta()},
             }
             display = missing.get("display_name", subject)
-            context = f"[在线检索] 论文「{display}」不在本地 KB 中：\n{online_result}"
+            context = f"[在线检索] 论文「{display}」不在本地 KB 中：\n{online_result.text}"
             if missing.get("abstract"):
                 context += f"\n\n预存元数据：摘要={missing['abstract']}"
             return EvidenceItem(subject=subject, content=context, source="online", is_missing=True)
@@ -593,19 +723,19 @@ class ReactAgent:
             logger.info(f"[QA] KB缺失命中 → 在线检索")
             yield {"type": "system", "content": "正在在线检索论文...", "name": "system"}
             online_q = missing.get("online_query") or missing.get("display_name", query)
-            online_result = _search_academic_papers_internal(online_q, candidate=subject if subject else "")
-            logger.info(f"[QA] 在线检索完成 ({len(online_result)} chars)")
+            online_result = search_academic_papers_core(online_q, candidate=subject if subject else "")
+            logger.info(f"[QA] 在线检索完成 ({len(online_result.text)} chars)")
             self.callback.tool_invocation_log.append({
-                "name": "search_academic_papers", "output": online_result,
+                "name": "search_academic_papers", "output": online_result.text,
                 "elapsed": 0, "status": "success",
             })
             yield {
-                "type": "tool", "content": online_result[:500], "name": "search_academic_papers",
+                "type": "tool", "content": online_result.text[:500], "name": "search_academic_papers",
                 "query": online_q, "elapsed": 0,
-                "meta": {"papers": self._scored_to_papers_meta()},
+                "meta": {"papers": online_result.papers_meta()},
             }
             display = missing.get("display_name", subject)
-            content = online_result
+            content = online_result.text
             if missing.get("abstract"):
                 content = f"摘要：{missing['abstract']}\n\n{content}"
             yield from self._generate_answer_from_chunks(
@@ -646,10 +776,20 @@ class ReactAgent:
 
         # Round 1: LLM judge
         judge1 = yield from self._llm_judge_chunks(all_chunks, query)
-        if judge1["sufficient"]:
+        if judge1["sufficient"] and judge1["relevant_chunks"]:
+            logger.info("[QATrace][branch] answer_after_round1 sufficient=True relevant=%d",
+                        len(judge1["relevant_chunks"]))
             yield from self._generate_answer_from_chunks(judge1["relevant_chunks"], query, Intent.QA, max_chunks=15, max_tokens=5000, memory_context=self._build_memory_context(query))
             self._log_session_end("qa")
             return
+        elif judge1["sufficient"] and not judge1["relevant_chunks"]:
+            logger.error("[QATrace][branch] invariant_violation sufficient=True relevant=0, forcing insufficient")
+        logger.info("[QATrace][branch] round1_insufficient relevant=%d refine_query=%r",
+                    len(judge1.get("relevant_chunks") or []),
+                    (judge1.get("refine_query") or "")[:200])
+
+        # Retain round1 relevant evidence
+        retained_local = list(judge1.get("relevant_chunks") or [])
 
         # Round 2: refine query 再检索
         refine_query = judge1.get("refine_query", query)
@@ -687,18 +827,35 @@ class ReactAgent:
                 f"[Quality] Round2 soft_miss={quality2['is_soft_miss']} "
                 f"signals={quality2['signals']} max_score={quality2['max_score']:.3f} coverage={quality2['coverage']:.2f}"
             )
+        else:
+            logger.info("[QATrace][branch] skip_round2 invalid refine_query=%r in_issued=%s",
+                        (refine_query or "<empty>")[:200],
+                        str(refine_query in issued) if refine_query else "N/A")
 
-        # Round 2: 再次 judge
+        # Round 2: 再次 judge (with merged chunks if round2 executed)
         judge2 = yield from self._llm_judge_chunks(all_chunks, query)
-        if judge2["sufficient"]:
+        if judge2["sufficient"] and judge2["relevant_chunks"]:
+            logger.info("[QATrace][branch] answer_after_round2 sufficient=True relevant=%d",
+                        len(judge2["relevant_chunks"]))
             yield from self._generate_answer_from_chunks(judge2["relevant_chunks"], query, Intent.QA, max_chunks=15, max_tokens=5000, memory_context=self._build_memory_context(query))
             self._log_session_end("qa")
             return
 
-        # Round 3: 在线兜底（优先用 kb_missing 摘要/论文名，而非自然语言问句）
+        # Merge round2 relevant into retained
+        if judge2.get("relevant_chunks"):
+            seen_ids = {id(c) for c in retained_local}
+            for c in judge2["relevant_chunks"]:
+                if id(c) not in seen_ids:
+                    retained_local.append(c)
+                    seen_ids.add(id(c))
+        logger.info("[QATrace][branch] round2_insufficient merged_relevant=%d round1_relevant=%d round2_relevant=%d",
+                    len(retained_local),
+                    len(judge1.get("relevant_chunks") or []),
+                    len(judge2.get("relevant_chunks") or []))
+
+        # Round 3: 在线兜底
         missing = self._match_kb_missing(subject if subject else query)
         if missing and missing.get("abstract"):
-            # 有摘要 → 跳过在线检索，直接使用预存元数据
             display = missing.get("display_name", subject)
             logger.info(f"[QA] kb_missing有摘要，跳过在线检索: {display}")
             content = f"摘要：{missing['abstract']}"
@@ -721,7 +878,6 @@ class ReactAgent:
                 },
             }
         else:
-            # 用论文名/model name 搜索，不用自然语言问句
             if missing:
                 online_q = missing.get("online_query") or missing.get("display_name", subject)
                 logger.info(f"[QA] kb_missing命中，在线检索query: {online_q}")
@@ -729,21 +885,23 @@ class ReactAgent:
                 online_q = self._build_online_query(query, subject)
                 logger.info(f"[QA] 在线兜底（无kb_missing），关键词query: {online_q}")
             yield {"type": "system", "content": "正在在线检索论文...", "name": "system"}
-            online_result = _search_academic_papers_internal(online_q, candidate=subject if subject else "")
-            logger.info(f"[QA] 在线检索结果 ({len(online_result)} chars): {online_result[:300]}")
+            online_result = search_academic_papers_core(online_q, candidate=subject if subject else "")
+            logger.info(f"[QA] 在线检索结果 ({len(online_result.text)} chars): {online_result.text[:300]}")
             self.callback.tool_invocation_log.append({
-                "name": "search_academic_papers", "output": online_result, "elapsed": 0, "status": "success",
+                "name": "search_academic_papers", "output": online_result.text, "elapsed": 0, "status": "success",
             })
             yield {
-                "type": "tool", "content": online_result[:500], "name": "search_academic_papers",
+                "type": "tool", "content": online_result.text[:500], "name": "search_academic_papers",
                 "query": online_q, "elapsed": 0,
-                "meta": {"papers": self._scored_to_papers_meta()},
+                "meta": {"papers": online_result.papers_meta()},
             }
             display = missing.get("display_name", query) if missing else "在线检索结果"
-            online_block = {"title": display, "source": "在线检索", "content": online_result}
+            online_block = {"title": display, "source": "在线检索", "content": online_result.text}
 
+        logger.info("[QATrace][branch] online_fallback local_chunks=%d online_blocks=1",
+                    len(retained_local))
         yield from self._generate_answer_from_chunks(
-            judge2["relevant_chunks"], query, Intent.QA, max_chunks=15, max_tokens=5000,
+            retained_local, query, Intent.QA, max_chunks=15, max_tokens=5000,
             memory_context=self._build_memory_context(query),
             online_blocks=[online_block],
         )
@@ -785,18 +943,18 @@ class ReactAgent:
 
             online_q = missing.get("online_query") or missing.get("display_name", subject)
             logger.info(f"[Compare] {subject} KB缺失，在线检索query: {online_q}")
-            online_result = _search_academic_papers_internal(online_q, candidate=subject)
-            logger.info(f"[Compare] {subject} 在线检索完成 ({len(online_result)} chars)")
+            online_result = search_academic_papers_core(online_q, candidate=subject)
+            logger.info(f"[Compare] {subject} 在线检索完成 ({len(online_result.text)} chars)")
             result["tool_logs"].append({
-                "name": "search_academic_papers", "output": online_result,
+                "name": "search_academic_papers", "output": online_result.text,
                 "elapsed": 0, "status": "success",
             })
             result["tool_previews"].append({
-                "type": "tool", "content": online_result[:500], "name": "search_academic_papers",
+                "type": "tool", "content": online_result.text[:500], "name": "search_academic_papers",
                 "query": online_q, "elapsed": 0,
-                "meta": {"papers": self._scored_to_papers_meta()},
+                "meta": {"papers": online_result.papers_meta()},
             })
-            result["online_block"] = {"title": display, "source": "在线检索", "content": online_result}
+            result["online_block"] = {"title": display, "source": "在线检索", "content": online_result.text}
             return result
 
         # Round 1: subject + aspects 检索
@@ -835,17 +993,17 @@ class ReactAgent:
         # 未命中目标论文 → 在线检索
         if not judge["paper_hit"]:
             logger.info(f"[Compare] {subject} 本地未命中 → 在线检索query: {subject}")
-            online_result = _search_academic_papers_internal(subject, candidate=subject)
+            online_result = search_academic_papers_core(subject, candidate=subject)
             result["tool_logs"].append({
-                "name": "search_academic_papers", "output": online_result,
+                "name": "search_academic_papers", "output": online_result.text,
                 "elapsed": 0, "status": "success",
             })
             result["tool_previews"].append({
-                "type": "tool", "content": online_result[:500], "name": "search_academic_papers",
+                "type": "tool", "content": online_result.text[:500], "name": "search_academic_papers",
                 "query": subject, "elapsed": 0,
-                "meta": {"papers": self._scored_to_papers_meta()},
+                "meta": {"papers": online_result.papers_meta()},
             })
-            result["online_block"] = {"title": subject, "source": "在线检索（本地未命中）", "content": online_result}
+            result["online_block"] = {"title": subject, "source": "在线检索（本地未命中）", "content": online_result.text}
             return result
 
         # 命中但证据不足 → Round 2: 改写重试
@@ -943,7 +1101,7 @@ class ReactAgent:
         compare_text = ""
         if len(candidates) >= 2 and len(all_chunks) > 0:
             try:
-                compare_text = compare_papers.invoke({"titles_str": "; ".join(candidates[:4])})
+                compare_text = compare_papers("; ".join(candidates[:4]), ctx=ctx)
                 self.callback.tool_invocation_log.append({
                     "name": "compare_papers", "output": compare_text,
                     "elapsed": 0, "status": "success",
@@ -1092,43 +1250,79 @@ class ReactAgent:
         # 2. LLM judge chunks
         judge_result = yield from self._llm_judge_chunks(docs, query)
 
-        # 3. 不足则在线补充
-        extra_context = ""
+        # 3. 不足则在线补充 → 作为 online_blocks（享受 evidence budget 最低保障）
+        online_blocks = []
         if not judge_result["sufficient"]:
             yield {"type": "system", "content": "正在在线检索补充文献...", "name": "system"}
             subject = self._extract_candidates(query)
             first = subject[0] if subject else ""
             online_q = self._build_online_query(query, first)
             logger.info(f"[Review] 在线检索query: {online_q}")
-            online_result = _search_academic_papers_internal(online_q, candidate=first)
+            online_result = search_academic_papers_core(online_q, candidate=first)
+
+            # === CitationTrace: after online retrieval ===
+            online_text = online_result.text or ""
+            scored_count = len(online_result.scored_results) if hasattr(online_result, 'scored_results') else 0
+            logger.info(
+                "[CitationTrace][online_result] text_len=%d newline_count=%d",
+                len(online_text), online_text.count("\n"),
+            )
+            logger.info(
+                "[CitationTrace][online_result] scored_results_count=%d",
+                scored_count,
+            )
+            for idx, (paper, score) in enumerate(online_result.scored_results[:10]):
+                logger.info(
+                    "[CitationTrace][online_result][paper:%d] title=%r score=%.3f abstract_len=%d doi=%r url=%r",
+                    idx, paper.title, score, len(paper.abstract or ""), paper.doi, paper.url,
+                )
+            # === end CitationTrace ===
+
             self.callback.tool_invocation_log.append({
-                "name": "search_academic_papers", "output": online_result, "elapsed": 0, "status": "success",
+                "name": "search_academic_papers", "output": online_result.text, "elapsed": 0, "status": "success",
             })
             yield {
-                "type": "tool", "content": online_result[:500], "name": "search_academic_papers",
+                "type": "tool", "content": online_result.text[:500], "name": "search_academic_papers",
                 "query": online_q, "elapsed": 0,
-                "meta": {"papers": self._scored_to_papers_meta()},
+                "meta": {"papers": online_result.papers_meta()},
             }
-            extra_context = f"[在线检索补充]\n{online_result}"
+
+            # 使用 scored_results 逐篇构造独立 EvidenceBlock
+            online_blocks = self._build_review_online_blocks(
+                online_result.scored_results,
+                max_papers=30,
+            )
+
+            # === CitationTrace: after online_blocks constructed ===
+            logger.info("[CitationTrace][online_blocks] len=%d", len(online_blocks))
+            for idx, block in enumerate(online_blocks):
+                blk_content = block.get("content", "")
+                logger.info(
+                    "[CitationTrace][online_block:%d] title=%r source=%r content_len=%d newline_count=%d",
+                    idx, block.get("title"), block.get("source"),
+                    len(blk_content), blk_content.count("\n"),
+                )
+            # === end CitationTrace ===
 
         yield from self._generate_answer_from_chunks(
-            judge_result["relevant_chunks"], query, Intent.REVIEW, extra_context=extra_context, max_chunks=30, max_tokens=8000,
-            memory_context=self._build_memory_context(query)
+            judge_result["relevant_chunks"], query, Intent.REVIEW, max_chunks=30, max_tokens=8000,
+            memory_context=self._build_memory_context(query),
+            online_blocks=online_blocks,
         )
         self._log_session_end("review")
 
     def execute_stream(self, query: str) -> Generator[dict, None, None]:
         # === RESET per-execution state ===
+        from agent.execution_context import ExecutionContext
         self._retrieval_state = AgentRetrievalState()
-        self._retrieval_state_ref[0] = self._retrieval_state
         self._execution_policy = AgentExecutionPolicy()
-        self._policy_holder[0] = self._execution_policy
+        ctx = ExecutionContext(
+            policy=self._execution_policy,
+            retrieval_state=self._retrieval_state,
+        )
         self._current_intent = Intent.QA
         self.callback.tool_invocation_log.clear()
 
-        # 向工具模块注入共享状态（预算计数器 + 在线门控引用）
-        tool_budget = [0]
-        _set_shared_state(tool_budget, self._retrieval_state_ref)
 
         # === CLASSIFY intent ===
         self._current_intent = self.intent_router.classify(query)
@@ -1137,15 +1331,12 @@ class ReactAgent:
         # === ROUTE by intent ===
         if self._current_intent == Intent.QA:
             yield from self._execute_qa_pipeline(query)
-            self._policy_holder[0] = None
             return
         elif self._current_intent == Intent.COMPARE:
             yield from self._execute_compare_pipeline(query)
-            self._policy_holder[0] = None
             return
         elif self._current_intent == Intent.REVIEW:
             yield from self._execute_review_pipeline(query)
-            self._policy_holder[0] = None
             return
 
     def _verify_citations(self, answer: str, tool_results: list) -> str:

@@ -1,0 +1,97 @@
+[
+  {
+    "title": "Exploring tissue architecture using spatial transcriptomics",
+    "authors": [
+      "Anjali Rao",
+      "Dalia Barkley",
+      "Gustavo S. França",
+      "Itai Yanai"
+    ],
+    "year": "2021",
+    "venue": "Nature",
+    "doi": "https://doi.org/10.1038/s41586-021-03634-9",
+    "url": "https://doi.org/10.1038/s41586-021-03634-9",
+    "abstract": "",
+    "citation_count": 1732,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W3190202966",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Museum of spatial transcriptomics",
+    "authors": [
+      "Lambda Moses",
+      "Lior Pachter"
+    ],
+    "year": "2022",
+    "venue": "Nature Methods",
+    "doi": "https://doi.org/10.1038/s41592-022-01409-2",
+    "url": "https://doi.org/10.1038/s41592-022-01409-2",
+    "abstract": "",
+    "citation_count": 1242,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4220765701",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "An introduction to spatial transcriptomics for biomedical research",
+    "authors": [
+      "Cameron G. Williams",
+      "Hyun Jae Lee",
+      "Takahiro Asatsuma",
+      "Roser Vento‐Tormo",
+      "Ashraful Haque"
+    ],
+    "year": "2022",
+    "venue": "Genome Medicine",
+    "doi": "https://doi.org/10.1186/s13073-022-01075-1",
+    "url": "https://doi.org/10.1186/s13073-022-01075-1",
+    "abstract": "Single-cell transcriptomics (scRNA-seq) has become essential for biomedical research over the past decade, particularly in developmental biology, cancer, immunology, and neuroscience. Most commercially available scRNA-seq protocols require cells to be recovered intact and viable from tissue. This has precluded many cell types from study and largely destroys the spatial context that could otherwise inform analyses of cell identity and function. An increasing number of commercially available platforms now facilitate spatially resolved, high-dimensional assessment of gene transcription, known as 'spatial transcriptomics'. Here, we introduce different classes of method, which either record the locations of hybridized mRNA molecules in tissue, image the positions of cells themselves prior to assessment, or employ spatial arrays of mRNA probes of pre-determined location. We review sizes of tissue area that can be assessed, their spatial resolution, and the number and types of genes that can be profiled. We discuss if tissue preservation influences choice of platform, and provide guidance on whether specific platforms may be better suited to discovery screens or hypothesis testing. Finally, we introduce bioinformatic methods for analysing spatial transcriptomic data, including pre-processing, integration with existing scRNA-seq data, and inference of cell-cell interactions. Spatial -omics methods are already improving our understanding of human tissues in research, diagnostic, and therapeutic settings. To build upon these recent advancements, we provide entry-level guidance for those seeking to employ spatial transcriptomics in their own biomedical research.",
+    "citation_count": 891,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4283704002",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Integrating single-cell and spatial transcriptomics to elucidate intercellular tissue dynamics",
+    "authors": [
+      "Sophia K. Longo",
+      "Margaret Guo",
+      "Andrew L. Ji",
+      "Paul A. Khavari"
+    ],
+    "year": "2021",
+    "venue": "Nature Reviews Genetics",
+    "doi": "https://doi.org/10.1038/s41576-021-00370-8",
+    "url": "https://doi.org/10.1038/s41576-021-00370-8",
+    "abstract": "",
+    "citation_count": 1063,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W3171692328",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Spatially resolved transcriptomics: a comprehensive review of their technological advances, applications, and challenges",
+    "authors": [
+      "Mengnan Cheng",
+      "Yujia Jiang",
+      "Jiangshan Xu",
+      "Alexios‐Fotios A. Mentis",
+      "Shuai Wang"
+    ],
+    "year": "2023",
+    "venue": "Journal of genetics and genomics/Journal of Genetics and Genomics",
+    "doi": "https://doi.org/10.1016/j.jgg.2023.03.011",
+    "url": "https://doi.org/10.1016/j.jgg.2023.03.011",
+    "abstract": "The ability to explore life kingdoms is largely driven by innovations and breakthroughs in technology, from the invention of the microscope 350 years ago to the recent emergence of single-cell sequencing, by which the scientific community has been able to visualize life at an unprecedented resolution. Most recently, the Spatially Resolved Transcriptomics (SRT) technologies have filled the gap in probing the spatial or even three-dimensional organization of the molecular foundation behind the molecular mysteries of life, including the origin of different cellular populations developed from totipotent cells and human diseases. In this review, we introduce recent progresses and challenges on SRT from the perspectives of technologies and bioinformatic tools, as well as the representative SRT applications. With the currently fast-moving progress of the SRT technologies and promising results from early adopted research projects, we can foresee the bright future of such new tools in understanding life at the most profound analytical level.",
+    "citation_count": 176,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4360999347",
+    "semantic_scholar_id": ""
+  }
+]

@@ -1,0 +1,114 @@
+[
+  {
+    "title": "LLM agents security duality: a comprehensive survey of self-security and empowered cybersecurity.",
+    "authors": [
+      "Yiwei Xu",
+      "Yong Zhuang",
+      "Xuanming Liu",
+      "Tian Zhang 0019",
+      "Bowen Xiao",
+      "Xiaoyang Xu 0001",
+      "Delong Jiang",
+      "Juan Wang 0006",
+      "Hongxin Hu"
+    ],
+    "year": "2026",
+    "venue": "Artif. Intell. Rev.",
+    "doi": "",
+    "url": "https://doi.org/10.1007/s10462-026-11563-0",
+    "abstract": "",
+    "citation_count": 0,
+    "source": "DBLP",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "LLM agents security duality: a comprehensive survey of self-security and empowered cybersecurity.",
+    "authors": [
+      "Yiwei Xu",
+      "Yong Zhuang",
+      "Xuanming Liu",
+      "Tian Zhang 0019",
+      "Bowen Xiao",
+      "Xiaoyang Xu 0001",
+      "Delong Jiang",
+      "Juan Wang 0006",
+      "Hongxin Hu"
+    ],
+    "year": "2026",
+    "venue": "CoRR",
+    "doi": "",
+    "url": "https://doi.org/10.48550/arXiv.2606.28450",
+    "abstract": "",
+    "citation_count": 0,
+    "source": "DBLP",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "The Emerged Security and Privacy of LLM Agent: A Survey with Case Studies.",
+    "authors": [
+      "Feng He",
+      "Tianqing Zhu",
+      "Dayong Ye",
+      "Bo Liu 0001",
+      "Wanlei Zhou 0001",
+      "Philip S. Yu"
+    ],
+    "year": "2026",
+    "venue": "ACM Comput. Surv.",
+    "doi": "",
+    "url": "https://doi.org/10.1145/3773080",
+    "abstract": "",
+    "citation_count": 0,
+    "source": "DBLP",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "LLMs in Software Security: A Survey of Vulnerability Detection Techniques and Insights.",
+    "authors": [
+      "Ze Sheng",
+      "Zhicheng Chen",
+      "Shuning Gu",
+      "Heqing Huang 0002",
+      "Guofei Gu",
+      "Jeff Huang 0001"
+    ],
+    "year": "2026",
+    "venue": "ACM Comput. Surv.",
+    "doi": "",
+    "url": "https://doi.org/10.1145/3769082",
+    "abstract": "",
+    "citation_count": 0,
+    "source": "DBLP",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Security and privacy in LLMs: A comprehensive survey of threats and mitigation strategies.",
+    "authors": [
+      "Aymen Dia Eddine Berini",
+      "Norziana Jamil",
+      "Ala-Eddine Benrazek",
+      "Abderrahmane Lakas",
+      "Leila Ismail",
+      "Mohamed Amine Ferrag",
+      "Kwok-Yan Lam"
+    ],
+    "year": "2026",
+    "venue": "Inf. Fusion",
+    "doi": "",
+    "url": "https://doi.org/10.1016/j.inffus.2026.104241",
+    "abstract": "",
+    "citation_count": 0,
+    "source": "DBLP",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  }
+]

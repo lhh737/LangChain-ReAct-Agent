@@ -1,0 +1,114 @@
+[
+  {
+    "title": "A Survey of LLM-Driven AI Agent Communication: Protocols, Security Risks, and Defense Countermeasures",
+    "authors": [
+      "Dezhang Kong",
+      "Shi Lin",
+      "Zhenhua Xu",
+      "Zhebo Wang",
+      "Minghao Li",
+      "Yufeng Li",
+      "Yilun Zhang",
+      "Hujin Peng",
+      "Zeyang Sha",
+      "Yuyuan Li",
+      "Changting Lin",
+      "Xun Wang",
+      "Xuan Liu",
+      "Ningyu Zhang",
+      "Chao-Jun Chen",
+      "Muhammad Khurram Khan",
+      "Meng Han"
+    ],
+    "year": "2025",
+    "venue": "",
+    "doi": "10.48550/arXiv.2506.19676",
+    "url": "https://www.semanticscholar.org/paper/efebe807c65b8f640b6f34c2910e81b8b9f7f7c5",
+    "abstract": "In recent years, Large-Language-Model-driven AI agents have exhibited unprecedented intelligence and adaptability. Nowadays, agents are undergoing a new round of evolution. They no longer act as an isolated island like LLMs. Instead, they start to communicate with diverse external entities, such as other agents and tools, to perform complex tasks. Under this trend, agent communication is regarded as a foundational pillar of the next communication era, and many organizations have intensively begun to design related communication protocols (e.g., Anthropic's MCP and Google's A2A) within the past year. However, this new field exposes significant security hazards, which can cause severe damage to real-world scenarios. To help researchers quickly figure out this promising topic and benefit the future agent communication development, this paper presents a comprehensive survey of agent communication security. More precisely, we present the first clear definition of agent communication. Besides, we propose a framework that categorizes agent communication into three classes and uses a three-layered communication architecture to illustrate how each class works. Next, for each communication class, we dissect related communication protocols and analyze the security risks, illustrating which communication layer the risks arise from. Then, we provide an outlook on the possible defense countermeasures for each risk. In addition, we conduct experiments using MCP and A2A to help readers better understand the novel vulnerabilities brought by agent communication. Finally, we discuss open issues and future directions in this promising research field. We also publish a repository that maintains a list of related papers on https://github.com/theshi-1128/awesome-agent-communication-security.",
+    "citation_count": 71,
+    "source": "Semantic Scholar",
+    "arxiv_id": "2506.19676",
+    "openalex_id": "",
+    "semantic_scholar_id": "efebe807c65b8f640b6f34c2910e81b8b9f7f7c5"
+  },
+  {
+    "title": "A Survey on Large Language Model (LLM) Security and Privacy: The Good, the Bad, and the Ugly",
+    "authors": [
+      "Yifan Yao",
+      "Jinhao Duan",
+      "Kaidi Xu",
+      "Yuanfang Cai",
+      "Eric Sun",
+      "Yue Zhang"
+    ],
+    "year": "2023",
+    "venue": "",
+    "doi": "10.1016/j.hcc.2024.100211",
+    "url": "https://www.semanticscholar.org/paper/383c598625110e0a4c60da4db10a838ef822fbcf",
+    "abstract": "Large Language Models (LLMs), such as ChatGPT and Bard, have revolutionized natural language understanding and generation. They possess deep language comprehension, human-like text generation capabilities, contextual awareness, and robust problem-solving skills, making them invaluable in various domains (e.g., search engines, customer support, translation). In the meantime, LLMs have also gained traction in the security community, revealing security vulnerabilities and showcasing their potential in security-related tasks. This paper explores the intersection of LLMs with security and privacy. Specifically, we investigate how LLMs positively impact security and privacy, potential risks and threats associated with their use, and inherent vulnerabilities within LLMs. Through a comprehensive literature review, the paper categorizes the papers into\"The Good\"(beneficial LLM applications),\"The Bad\"(offensive applications), and\"The Ugly\"(vulnerabilities of LLMs and their defenses). We have some interesting findings. For example, LLMs have proven to enhance code security (code vulnerability detection) and data privacy (data confidentiality protection), outperforming traditional methods. However, they can also be harnessed for various attacks (particularly user-level attacks) due to their human-like reasoning abilities. We have identified areas that require further research efforts. For example, Research on model and parameter extraction attacks is limited and often theoretical, hindered by LLM parameter scale and confidentiality. Safe instruction tuning, a recent development, requires more exploration. We hope that our work can shed light on the LLMs' potential to both bolster and jeopardize cybersecurity.",
+    "citation_count": 1265,
+    "source": "Semantic Scholar",
+    "arxiv_id": "2312.02003",
+    "openalex_id": "",
+    "semantic_scholar_id": "383c598625110e0a4c60da4db10a838ef822fbcf"
+  },
+  {
+    "title": "The Emerged Security and Privacy of LLM Agent: A Survey with Case Studies",
+    "authors": [
+      "Feng He",
+      "Tianqing Zhu",
+      "Dayong Ye",
+      "Bo Liu",
+      "Wanlei Zhou",
+      "Philip S. Yu"
+    ],
+    "year": "2024",
+    "venue": "",
+    "doi": "10.1145/3773080",
+    "url": "https://www.semanticscholar.org/paper/46aa99ae2fcbe2437f7469d9d45d05450e219080",
+    "abstract": "Inspired by the rapid development of Large Language Models (LLMs), LLM agents have evolved to perform complex tasks. LLM agents are now extensively applied across various domains, handling vast amounts of data to interact with humans and execute tasks. The widespread applications of LLM agents demonstrate their significant commercial value; however, they also expose security and privacy vulnerabilities. At the current stage, comprehensive research on the security and privacy of LLM agents is highly needed. This survey aims to provide a comprehensive overview of the newly emerged privacy and security issues faced by LLM agents. We begin by introducing the fundamental knowledge of LLM agents, followed by a categorization and analysis of the threats. We then discuss the impacts of these threats on humans, environment, and other agents. Subsequently, we review existing defensive strategies, and finally explore future trends. Additionally, the survey incorporates diverse case studies to facilitate a more accessible understanding. By highlighting these critical security and privacy issues, the survey seeks to stimulate future research towards enhancing the security and privacy of LLM agents, thereby increasing their reliability and trustworthiness in future applications.",
+    "citation_count": 177,
+    "source": "Semantic Scholar",
+    "arxiv_id": "2407.19354",
+    "openalex_id": "",
+    "semantic_scholar_id": "46aa99ae2fcbe2437f7469d9d45d05450e219080"
+  },
+  {
+    "title": "Security of LLM-based agents regarding attacks, defenses, and applications: A comprehensive survey",
+    "authors": [
+      "Yaxin Tang",
+      "Yijia Liu",
+      "Jiahe Lan",
+      "Zheng Yan",
+      "Erol Gelenbe"
+    ],
+    "year": "2025",
+    "venue": "",
+    "doi": "10.1016/j.inffus.2025.103941",
+    "url": "https://www.semanticscholar.org/paper/71a6da06ccde18baf6329398885fbb65f16f8647",
+    "abstract": "",
+    "citation_count": 21,
+    "source": "Semantic Scholar",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": "71a6da06ccde18baf6329398885fbb65f16f8647"
+  },
+  {
+    "title": "Thinking Machines: A Survey of LLM based Reasoning Strategies",
+    "authors": [
+      "Dibyanayan Bandyopadhyay",
+      "Soham Bhattacharjee",
+      "A. Ekbal"
+    ],
+    "year": "2025",
+    "venue": "",
+    "doi": "10.48550/arXiv.2503.10814",
+    "url": "https://www.semanticscholar.org/paper/9c4d8cdbe337b309bb1649d0f5aad508d4f05f40",
+    "abstract": "Large Language Models (LLMs) are highly proficient in language-based tasks. Their language capabilities have positioned them at the forefront of the future AGI (Artificial General Intelligence) race. However, on closer inspection, Valmeekam et al. (2024); Zecevic et al. (2023); Wu et al. (2024) highlight a significant gap between their language proficiency and reasoning abilities. Reasoning in LLMs and Vision Language Models (VLMs) aims to bridge this gap by enabling these models to think and re-evaluate their actions and responses. Reasoning is an essential capability for complex problem-solving and a necessary step toward establishing trust in Artificial Intelligence (AI). This will make AI suitable for deployment in sensitive domains, such as healthcare, banking, law, defense, security etc. In recent times, with the advent of powerful reasoning models like OpenAI O1 and DeepSeek R1, reasoning endowment has become a critical research topic in LLMs. In this paper, we provide a detailed overview and comparison of existing reasoning techniques and present a systematic survey of reasoning-imbued language models. We also study current challenges and present our findings.",
+    "citation_count": 31,
+    "source": "Semantic Scholar",
+    "arxiv_id": "2503.10814",
+    "openalex_id": "",
+    "semantic_scholar_id": "9c4d8cdbe337b309bb1649d0f5aad508d4f05f40"
+  }
+]

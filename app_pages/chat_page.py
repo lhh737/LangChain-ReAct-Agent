@@ -88,6 +88,7 @@ h1, h2, h3 {
 
 /* ── 引用来源 ── */
 .ref-block {
+    white-space: pre-wrap;
     border-left: 3px solid rgba(59, 130, 246, 0.55);
     padding: 8px 12px;
     margin: 4px 0;
@@ -144,6 +145,58 @@ TOOL_LABELS = {
     "start_literature_review": "文献综述模式",
     "kb_missing_abstract": "KB 预存元数据",
 }
+
+def _render_references(structured_refs: list, fallback_content: str = ""):
+    """渲染引用来源：优先结构化列表，回退到字符串拆分"""
+    import html
+    if structured_refs:
+        parts = []
+        for ref in structured_refs:
+            idx = ref.get("index", "?")
+            title = ref.get("title", "未知")
+            source_type = ref.get("source_type", "")
+            source = ref.get("source", "")
+            authors = ref.get("authors", [])
+            year = ref.get("year", "")
+            doi = ref.get("doi", "")
+            url = ref.get("url", "")
+            evidence_type = ref.get("evidence_type", "abstract")
+            evidence_text = ref.get("evidence_text", "")
+
+            type_label = {"online": "[在线]", "local": "[本地]"}.get(source_type, "")
+            author_str = ", ".join(authors[:3]) if authors else ""
+            if len(authors) > 3:
+                author_str += " 等"
+
+            lines = []
+            lines.append(f"[{idx}] {type_label}《{html.escape(title)}》")
+            if author_str:
+                lines.append(f"作者：{html.escape(author_str)}")
+            if year:
+                lines.append(f"年份：{html.escape(str(year))}")
+            lines.append(f"来源：{html.escape(source)}")
+            lines.append(f"证据类型：{html.escape(evidence_type)}")
+            if doi:
+                lines.append(f"DOI：{html.escape(doi)}")
+            if url:
+                escaped = html.escape(url)
+                if len(url) > 80:
+                    lines.append(f'URL：<a href="{escaped}" target="_blank">{escaped[:80]}...</a>')
+                else:
+                    lines.append(f'URL：<a href="{escaped}" target="_blank">{escaped}</a>')
+            if evidence_text:
+                lines.append("")
+                lines.append(html.escape(evidence_text))
+
+            block_html = "<br>".join(lines)
+            parts.append(f'<div class="ref-block">{block_html}</div>')
+
+        st.markdown(f'<div class="ref-scroll">{"".join(parts)}</div>', unsafe_allow_html=True)
+    elif fallback_content:
+        # Legacy fallback: split by double newline
+        parts = [f'<div class="ref-block">{html.escape(l.strip())}</div>'
+                 for l in fallback_content.split("\n\n") if l.strip()]
+        st.markdown(f'<div class="ref-scroll">{"".join(parts)}</div>', unsafe_allow_html=True)
 
 
 def _render_tool_card(name: str, content: str, query: str = "", elapsed: float = 0,
@@ -318,9 +371,15 @@ def render_chat_page():
                     meta=msg.get("meta"),
                 )
             elif msg.get("type") == "references":
+                ref_hist_content = msg.get("content", "")
+                structured_refs = msg.get("references", [])
+                from utils.logger_handler import logger
+                logger.info(
+                    "[CitationTrace][frontend_history_render] len=%d newline_count=%d structured_count=%d",
+                    len(ref_hist_content), ref_hist_content.count("\n"), len(structured_refs),
+                )
                 with st.expander("📎 引用来源", expanded=False):
-                    parts = [f'<div class="ref-block">{l.strip()}</div>' for l in msg["content"].split("\n\n") if l.strip()]
-                    st.markdown(f'<div class="ref-scroll">{"".join(parts)}</div>', unsafe_allow_html=True)
+                    _render_references(structured_refs, ref_hist_content)
             else:
                 st.markdown(msg["content"])
 
@@ -352,15 +411,23 @@ def render_chat_page():
 
                 elif chunk_type == "references":
                     ref_content = chunk.get("content", "")
+                    structured_refs = chunk.get("references", [])
+                    # === CitationTrace: frontend receive ===
+                    from utils.logger_handler import logger
+                    logger.info(
+                        "[CitationTrace][frontend_receive] len=%d newline_count=%d structured_count=%d",
+                        len(ref_content), ref_content.count("\n"), len(structured_refs),
+                    )
+                    # === end CitationTrace ===
                     st.session_state.messages.append({
                         "role": "assistant",
                         "content": ref_content,
                         "type": "references",
+                        "references": structured_refs,
                     })
                     with tool_placeholder.container():
                         with st.expander("📎 引用来源", expanded=False):
-                            parts = [f'<div class="ref-block">{l.strip()}</div>' for l in ref_content.split("\n\n") if l.strip()]
-                            st.markdown(f'<div class="ref-scroll">{"".join(parts)}</div>', unsafe_allow_html=True)
+                            _render_references(structured_refs, ref_content)
 
                 elif chunk_type == "tool":
                     tool_name = chunk.get("name", "unknown")

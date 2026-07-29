@@ -349,3 +349,18 @@ if __name__ == "__main__":
     print("\n" + "=" * 50, "Agent 端到端评估", "=" * 50)
     results_agent = evaluator.run_agent_eval()
     print("\n" + evaluator.generate_report(results_agent, mode="agent"))
+
+def main_rag(argv=None) -> int:
+    """RAG 直连评估"""
+    evaluator = ProgramQAEvaluator()
+    results = evaluator.run_rag_eval()
+    print(evaluator.generate_report(results, mode="rag"))
+    return 0
+
+
+def main_agent(argv=None) -> int:
+    """Agent 端到端评估"""
+    evaluator = ProgramQAEvaluator()
+    results = evaluator.run_agent_eval()
+    print(evaluator.generate_report(results, mode="agent"))
+    return 0

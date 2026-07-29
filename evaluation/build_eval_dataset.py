@@ -415,3 +415,11 @@ def build():
 
 if __name__ == "__main__":
     build()
+
+def main(argv=None) -> int:
+    """CLI 入口"""
+    if argv:
+        print(f"Unknown arguments: {argv}", file=__import__("sys").stderr)
+        return 1
+    build()
+    return 0

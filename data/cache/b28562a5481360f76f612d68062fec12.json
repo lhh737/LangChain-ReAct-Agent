@@ -1,0 +1,99 @@
+[
+  {
+    "title": "Securing Automated Insulin Delivery Systems: A Review of Security Threats and Protective Strategies",
+    "authors": [
+      "Yuchen Niu",
+      "Siew-Kei Lam"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2503.14006v2",
+    "abstract": "Automated Insulin Delivery (AID) systems represent a significant advancement in diabetes care and wearable physiological closed-loop control technologies, integrating continuous glucose monitoring, control algorithms, and insulin pumps to improve blood glucose level control and reduce the burden of patient self-management. However, their increasing dependence on wireless communication and automatic control introduces security risks that may compromise patient privacy or result in life-threatening treatment errors. This paper presents a comprehensive survey of the AID system security landscape, covering technical vulnerabilities, regulatory frameworks, and commercial security measures. In addition, we conduct a systematic review of attack vectors and defence mechanisms proposed in the literature, following the PRISMA framework. Our findings highlight critical gaps, including the lack of specific security evaluation frameworks, insufficient protections in real-world deployments, and the need for comprehensive, lightweight, and adaptive defence mechanisms. We further investigate available research resources and outline open research challenges and future directions to guide the development of more secure and reliable AID systems. By focusing on AID systems, this review offers a representative case study for examining and improving the cybersecurity of safety-critical medical wearable systems.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2503.14006v2",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "A Survey on Reconfigurable Intelligent Surfaces in Practical Systems: Security and Privacy Perspectives",
+    "authors": [
+      "Ziyu Chen",
+      "Yitong Shen",
+      "Jingzhe Zhang",
+      "Yao Zheng",
+      "Yili Ren",
+      "Xuyu Wang",
+      "Shiwen Mao",
+      "Hanqing Guo"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2512.15754v1",
+    "abstract": "Reconfigurable Intelligent Surfaces (RIS) have emerged as a transformative technology capable of reshaping wireless environments through dynamic manipulation of electromagnetic waves. While extensive research has explored their theoretical benefits for communication and sensing, practical deployments in smart environments such as homes, vehicles, and industrial settings remain limited and under-examined, particularly from security and privacy perspectives. This survey provides a comprehensive examination of RIS applications in real-world systems, with a focus on the security and privacy threats, vulnerabilities, and defensive strategies relevant to practical use. We analyze scenarios with two types of systems (with and without legitimate RIS) and two types of attackers (with and without malicious RIS), and demonstrate how RIS may introduce new attacks to practical systems, including eavesdropping, jamming, and spoofing attacks. In response, we review defenses against RIS-related attacks in these systems, such as applying additional security algorithms, disrupting attackers, and early detection of unauthorized RIS. We also discuss scenarios in which the legitimate user applies an additional RIS to defend against attacks. To support future research, we also provide a collection of open-source tools, datasets, demos, and papers at: https://awesome-ris-security.github.io/. By highlighting RIS's functionality and its security/privacy challenges and opportunities, this survey aims to guide researchers and engineers toward the development of secure, resilient, and privacy-preserving RIS-enabled practical wireless systems and environments.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2512.15754v1",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Internet Service Providers' and Individuals' Attitudes, Barriers, and Incentives to Secure IoT",
+    "authors": [
+      "Nissy Sombatruang",
+      "Tristan Caulfield",
+      "Ingolf Becker",
+      "Akira Fujita",
+      "Takahiro Kasama",
+      "Koji Nakao",
+      "Daisuke Inoue"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2210.02137v1",
+    "abstract": "Internet Service Providers (ISPs) and individual users of Internet of Things (IoT) play a vital role in securing IoT. However, encouraging them to do so is hard. Our study investigates ISPs' and individuals' attitudes towards the security of IoT, the obstacles they face, and their incentives to keep IoT secure, drawing evidence from Japan.\n  Due to the complex interactions of the stakeholders, we follow an iterative methodology where we present issues and potential solutions to our stakeholders in turn. For ISPs, we survey 27 ISPs in Japan, followed by a workshop with representatives from government and 5 ISPs. Based on the findings from this, we conduct semi-structured interviews with 20 participants followed by a more quantitative survey with 328 participants. We review these results in a second workshop with representatives from government and 7 ISPs. The appreciation of challenges by each party has lead to findings that are supported by all stakeholders.\n  Securing IoT devices is neither users' nor ISPs' priority. Individuals are keen on more interventions both from the government as part of regulation and from ISPs in terms of filtering malicious traffic. Participants are willing to pay for enhanced monitoring and filtering. While ISPs do want to help users, there appears to be a lack of effective technology to aid them. ISPs would like to see more public recognition for their efforts, but internally they struggle with executive buy-in and effective means to communicate with their customers. The majority of barriers and incentives are external to ISPs and individuals, demonstrating the complexity of keeping IoT secure and emphasizing the need for relevant stakeholders in the IoT ecosystem to work in tandem.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2210.02137v1",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Perspectives of Non-Expert Users on Cyber Security and Privacy: An Analysis of Online Discussions on Twitter",
+    "authors": [
+      "Nandita Pattnaik",
+      "Shujun Li",
+      "Jason R. C. Nurse"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2206.02156v2",
+    "abstract": "Current research on users` perspectives of cyber security and privacy related to traditional and smart devices at home is very active, but the focus is often more on specific modern devices such as mobile and smart IoT devices in a home context. In addition, most were based on smaller-scale empirical studies such as online surveys and interviews. We endeavour to fill these research gaps by conducting a larger-scale study based on a real-world dataset of 413,985 tweets posted by non-expert users on Twitter in six months of three consecutive years (January and February in 2019, 2020 and 2021). Two machine learning-based classifiers were developed to identify the 413,985 tweets. We analysed this dataset to understand non-expert users` cyber security and privacy perspectives, including the yearly trend and the impact of the COVID-19 pandemic. We applied topic modelling, sentiment analysis and qualitative analysis of selected tweets in the dataset, leading to various interesting findings. For instance, we observed a 54% increase in non-expert users` tweets on cyber security and/or privacy related topics in 2021, compared to before the start of global COVID-19 lockdowns (January 2019 to February 2020). We also observed an increased level of help-seeking tweets during the COVID-19 pandemic. Our analysis revealed a diverse range of topics discussed by non-expert users across the three years, including VPNs, Wi-Fi, smartphones, laptops, smart home devices, financial security, and security and privacy issues involving different stakeholders. Overall negative sentiment was observed across almost all topics non-expert users discussed on Twitter in all the three years. Our results confirm the multi-faceted nature of non-expert users` perspectives on cyber security and privacy and call for more holistic, comprehensive and nuanced research on different facets of such perspectives.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2206.02156v2",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "A Survey of Biometric keystroke Dynamics: Approaches, Security and Challenges",
+    "authors": [
+      "D. Shanmugapriya",
+      "G. Padmavathi"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/0910.0817v1",
+    "abstract": "Biometrics technologies are gaining popularity today since they provide more reliable and efficient means of authentication and verification. Keystroke Dynamics is one of the famous biometric technologies, which will try to identify the authenticity of a user when the user is working via a keyboard. The authentication process is done by observing the change in the typing pattern of the user. A comprehensive survey of the existing keystroke dynamics methods, metrics, different approaches are given in this study. This paper also discusses about the various security issues and challenges faced by keystroke dynamics.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "0910.0817v1",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  }
+]

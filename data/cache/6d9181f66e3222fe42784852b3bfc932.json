@@ -1,0 +1,111 @@
+[
+  {
+    "title": "LLM agents security duality: a comprehensive survey of self-security and empowered cybersecurity",
+    "authors": [
+      "Yiwei Xu",
+      "Yong Zhuang",
+      "Xuanming Liu",
+      "Tian Zhang",
+      "Bowen Xiao",
+      "Xiaoyang Xu",
+      "Delong Jiang",
+      "Juan Wang",
+      "Hongxin Hu"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2606.28450v1",
+    "abstract": "Large language model (LLM) agents are rapidly being integrated into real-world systems. Their autonomy and tool-use capabilities generate substantial value while simultaneously expanding the security attack surface. This survey provides a comprehensive overview of the opportunities and challenges of LLM agents in security, focusing on two core areas: (1) threats to LLM agents themselves and corresponding mitigation strategies (LLM agents self-security), and (2) the role of LLM agents in empowering the cybersecurity lifecycle across offense and defense (LLM agents empowered cybersecurity). We first examine the internal and external attack surfaces of agents, propose a taxonomy organized by threat sources, and analyze associated mitigations and evaluation frameworks. We then investigate how agent capabilities are applied in cybersecurity practice and present, to our knowledge, the first agent-empowerment framework aligned with the full cyber offense-defense lifecycle. By systematically surveying these two areas, we are the first to highlight a positive feedback synergy between LLM agents self-security and empowered cybersecurity, offering new insights for the advancement of both. We further identify current limitations and outline promising directions for future research. The insights provided aim to catalyze the coordinated development of LLM agents self-security and agent empowered cybersecurity, paving the way for more capable and robust agent applications.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2606.28450v1",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "The Emerged Security and Privacy of LLM Agent: A Survey with Case Studies",
+    "authors": [
+      "Feng He",
+      "Tianqing Zhu",
+      "Dayong Ye",
+      "Bo Liu",
+      "Wanlei Zhou",
+      "Philip S. Yu"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2407.19354v2",
+    "abstract": "Inspired by the rapid development of Large Language Models (LLMs), LLM agents have evolved to perform complex tasks. LLM agents are now extensively applied across various domains, handling vast amounts of data to interact with humans and execute tasks. The widespread applications of LLM agents demonstrate their significant commercial value; however, they also expose security and privacy vulnerabilities. At the current stage, comprehensive research on the security and privacy of LLM agents is highly needed. This survey aims to provide a comprehensive overview of the newly emerged privacy and security issues faced by LLM agents. We begin by introducing the fundamental knowledge of LLM agents, followed by a categorization and analysis of the threats. We then discuss the impacts of these threats on humans, environment, and other agents. Subsequently, we review existing defensive strategies, and finally explore future trends. Additionally, the survey incorporates diverse case studies to facilitate a more accessible understanding. By highlighting these critical security and privacy issues, the survey seeks to stimulate future research towards enhancing the security and privacy of LLM agents, thereby increasing their reliability and trustworthiness in future applications.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2407.19354v2",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Structuring Security: A Survey of Cybersecurity Ontologies, Semantic Log Processing, and LLMs Application",
+    "authors": [
+      "Bruno Lourenço",
+      "Pedro Adão",
+      "João F. Ferreira",
+      "Mario Monteiro Marques",
+      "Cátia Vaz"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2510.16610v1",
+    "abstract": "This survey investigates how ontologies, semantic log processing, and Large Language Models (LLMs) enhance cybersecurity. Ontologies structure domain knowledge, enabling interoperability, data integration, and advanced threat analysis. Security logs, though critical, are often unstructured and complex. To address this, automated construction of Knowledge Graphs (KGs) from raw logs is emerging as a key strategy for organizing and reasoning over security data. LLMs enrich this process by providing contextual understanding and extracting insights from unstructured content. This work aligns with European Union (EU) efforts such as NIS 2 and the Cybersecurity Taxonomy, highlighting challenges and opportunities in intelligent ontology-driven cyber defense.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2510.16610v1",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Towards trustworthy agentic AI: a comprehensive survey of safety, robustness, privacy, and system security",
+    "authors": [
+      "Jinhu Qi",
+      "Muzhi Li",
+      "Jiahong Liu",
+      "Yuqin Shu",
+      "Dianzhi Yu",
+      "Shicheng Ma",
+      "Wenqian Cui",
+      "Yiyang Zhao",
+      "Yiyi Chen",
+      "Ruoxi Jiang",
+      "Irwin King",
+      "Zenglin Xu"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2605.23989v1",
+    "abstract": "Agentic AI systems -- Large Language Models (LLMs) augmented with planning, tool use, memory, and long-horizon interactions -- can execute complex tasks autonomously, but their multi-step trajectories introduce new failure modes that challenge trustworthiness. This survey provides a focused examination of trustworthy agentic AI through two core dimensions that are critical for high-risk deployments: Safety and Robustness, and Privacy and System Security. For each dimension, we clarify key concepts, identify where risks emerge along the agent workflow, and summarize stage-targeted mitigation strategies. Other trustworthiness aspects (value alignment, transparency, fairness, and accountability) are discussed as relevant context rather than parallel chapters. To support consistent comparison and deployment decisions, we consolidate evaluation into a unified metrics-and-benchmarks hub, emphasizing both outcome and process signals (e.g., constraint violations, trace completeness, and adversarial success rates) and offering scenario-to-metric guidance for release gating. We conclude by outlining open challenges such as self-evolving agents, runtime monitoring and verification, privacy-preserving personalization, and the trust-utility trade-off, and present a case study of real-world security failures in open-source agentic systems. Our goal is to serve as a practical reference for researchers and practitioners building trustworthy agentic systems in high-stakes environments.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2605.23989v1",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "LLM Security: Vulnerabilities, Attacks, Defenses, and Countermeasures",
+    "authors": [
+      "Francisco Aguilera-Martínez",
+      "Fernando Berzal"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2505.01177v1",
+    "abstract": "As large language models (LLMs) continue to evolve, it is critical to assess the security threats and vulnerabilities that may arise both during their training phase and after models have been deployed. This survey seeks to define and categorize the various attacks targeting LLMs, distinguishing between those that occur during the training phase and those that affect already trained models. A thorough analysis of these attacks is presented, alongside an exploration of defense mechanisms designed to mitigate such threats. Defenses are classified into two primary categories: prevention-based and detection-based defenses. Furthermore, our survey summarizes possible attacks and their corresponding defense strategies. It also provides an evaluation of the effectiveness of the known defense mechanisms for the different security threats. Our survey aims to offer a structured framework for securing LLMs, while also identifying areas that require further research to improve and strengthen defenses against emerging security challenges.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2505.01177v1",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  }
+]

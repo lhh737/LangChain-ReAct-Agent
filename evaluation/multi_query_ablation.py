@@ -539,3 +539,8 @@ def run_eval():
 
 if __name__ == "__main__":
     run_eval()
+
+def main(argv=None) -> int:
+    """CLI 入口"""
+    run_eval()
+    return 0

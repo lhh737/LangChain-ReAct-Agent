@@ -58,8 +58,9 @@ class SourceSearchResult:
 
 
 @dataclass
+@dataclass(frozen=True)
 class SearchIntent:
-    """检索意图：封装候选论文名、类型、消歧关键词和兜底查询"""
+    """检索意图：不可变数据类，封装候选论文名、类型、消歧关键词和兜底查询"""
     candidate: str = ""
     candidate_type: str = "unknown"   # "acronym" | "full_title" | "arxiv_id" | "doi" | "unknown"
     keyword: str = ""                 # Stage 2 消歧关键词（延迟提取）
@@ -119,17 +120,19 @@ class AcademicDataClient:
         return hashlib.md5(canonical.encode()).hexdigest()
 
     def _load_spec_cache(self, spec: SourceQuerySpec) -> list[AcademicPaper] | None:
+        from agent.retrieval.cache_safety import CacheGuard
         key = self._spec_cache_key(spec)
         cache_file = os.path.join(self.CACHE_DIR, f"{key}.json")
         if not os.path.exists(cache_file):
             return None
         ttl = self.SOURCE_TTL.get(spec.source, self.OK_TTL)
         if time.time() - os.path.getmtime(cache_file) > ttl:
-            os.remove(cache_file)
+            CacheGuard.remove_expired(key, self.CACHE_DIR)
+            return None
+        data = CacheGuard.read(key, self.CACHE_DIR)
+        if data is None:
             return None
         try:
-            with open(cache_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
             return [AcademicPaper(**item) for item in data]
         except Exception:
             return None
@@ -137,13 +140,9 @@ class AcademicDataClient:
     def _save_spec_cache(self, spec: SourceQuerySpec, papers: list[AcademicPaper]):
         if not papers:
             return
+        from agent.retrieval.cache_safety import CacheGuard
         key = self._spec_cache_key(spec)
-        cache_file = os.path.join(self.CACHE_DIR, f"{key}.json")
-        try:
-            with open(cache_file, "w", encoding="utf-8") as f:
-                json.dump([p.__dict__ for p in papers], f, ensure_ascii=False, indent=2)
-        except Exception as e:
-            logger.warning(f"[AcademicClient]缓存写入失败: {e}")
+        CacheGuard.write(key, self.CACHE_DIR, [p.__dict__ for p in papers])
 
     # ── 多级去重 + 元数据合并 ──
 
@@ -207,12 +206,20 @@ class AcademicDataClient:
     @staticmethod
     def _merge_pair(a: AcademicPaper, b: AcademicPaper) -> AcademicPaper:
         """合并两条记录，优先保留非空字段（a 为主，b 补充缺失字段）"""
+        a_abs_before = len(a.abstract or "")
+        b_abs = len(b.abstract or "")
         for field in ["doi", "arxiv_id", "openalex_id", "semantic_scholar_id",
                        "abstract", "url", "venue", "year"]:
             av = getattr(a, field)
             bv = getattr(b, field)
             if not av and bv:
                 setattr(a, field, bv)
+        a_abs_after = len(a.abstract or "")
+        if b_abs > 0 and a_abs_before == 0 and a_abs_after == b_abs:
+            logger.info(
+                "[AbstractTrace][merge_pair] enriched title=%r abstract %d→%d from source %s",
+                a.title[:100], a_abs_before, a_abs_after, b.source,
+            )
         if not a.authors and b.authors:
             a.authors = b.authors
         if not a.citation_count and b.citation_count:
@@ -226,8 +233,10 @@ class AcademicDataClient:
 
     def search_stage(self, intent: SearchIntent, stage: int,
                      max_per_source: int = 5, fallback_variant: str = "") -> list[SourceSearchResult]:
-        """按阶段执行检索，各源使用 adapter 构建查询。返回所有源的 SourceSearchResult 列表"""
-        results: list[SourceSearchResult] = []
+        """按阶段执行检索（并行），各源使用 adapter 构建查询。返回所有源的 SourceSearchResult 列表"""
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        from utils.config_handler import agent_conf
+
         sources = [
             ("arxiv", self._search_arxiv_stage),
             ("crossref", self._search_crossref_stage),
@@ -236,21 +245,63 @@ class AcademicDataClient:
             ("semantic_scholar", self._search_semantic_scholar_stage),
         ]
 
-        for source_name, source_fn in sources:
-            t0 = time.time()
-            try:
-                spec = source_fn(intent, stage, max_per_source, fallback_variant)
-                if spec is None:
-                    continue  # 源不支持该 candidate_type/stage 组合
-                result = self._do_request(spec, stage)
-                result.elapsed = time.time() - t0
-                self._log_source_result(result)
-                results.append(result)
-            except Exception as e:
-                elapsed = time.time() - t0
-                logger.warning(f"[AcademicClient] {source_name} stage{stage}: 异常 ({elapsed:.1f}s) - {e}")
+        parallel_cfg = agent_conf.get("retrieval_parallel", {})
+        enabled = parallel_cfg.get("enabled", False)
+        max_workers = min(parallel_cfg.get("max_workers", 3), len(sources))
 
+        if not enabled or max_workers <= 1:
+            # 串行路径
+            results = []
+            for source_name, source_fn in sources:
+                result = self._fetch_source_result(
+                    source_name, source_fn, intent, stage, max_per_source, fallback_variant)
+                if result is not None:
+                    results.append(result)
+            return results
+
+        # 并行路径
+        indexed: dict[int, SourceSearchResult] = {}
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = {}
+            for idx, (name, fn) in enumerate(sources):
+                futures[executor.submit(
+                    self._fetch_source_result,
+                    name, fn, intent, stage, max_per_source, fallback_variant
+                )] = idx
+            for future in as_completed(futures):
+                idx = futures[future]
+                try:
+                    result = future.result()
+                    if result is not None:
+                        indexed[idx] = result
+                except Exception as e:
+                    logger.warning(f"[AcademicClient] {sources[idx][0]} stage{stage}: 线程异常 - {e}")
+
+        # 按原始 sources 索引恢复顺序
+        results = [indexed[i] for i in sorted(indexed)]
         return results
+
+    def _fetch_source_result(self, source_name: str, source_fn, intent, stage,
+                              max_per_source: int, fallback_variant: str
+                              ) -> SourceSearchResult | None:
+        """单个源的检索执行器（可被并行调用）"""
+        t0 = time.time()
+        try:
+            spec = source_fn(intent, stage, max_per_source, fallback_variant)
+            if spec is None:
+                return None
+            result = self._do_request(spec, stage)
+            result.elapsed = time.time() - t0
+            self._log_source_result(result)
+            return result
+        except Exception as e:
+            elapsed = time.time() - t0
+            logger.warning(f"[AcademicClient] {source_name} stage{stage}: 异常 ({elapsed:.1f}s) - {e}")
+            return SourceSearchResult(
+                source=source_name, stage=stage,
+                actual_query="", status="http_error",
+                error=str(e), elapsed=elapsed,
+            )
 
     # ── 各源 Stage 查询构建器 ──
 
@@ -294,6 +345,22 @@ class AcademicDataClient:
                         mode="search")
 
         return None
+
+    @staticmethod
+    def _clean_abstract(value: object) -> str:
+        """清洗摘要：HTML/XML 标签 → 纯文本，规范化空白"""
+        import html as _html
+        import re as _re
+
+        if not isinstance(value, str):
+            return ""
+        if not value.strip():
+            return ""
+
+        text = _html.unescape(value)
+        text = _re.sub(r"<[^>]+>", " ", text)
+        text = _re.sub(r"\s+", " ", text)
+        return text.strip()
 
     @staticmethod
     def _search_crossref_stage(intent: SearchIntent, stage: int, max_results: int,
@@ -477,7 +544,9 @@ class AcademicDataClient:
 
     def _do_request(self, spec: SourceQuerySpec, stage: int,
                     timeout: float = 15.0) -> SourceSearchResult:
-        """执行单个源请求，优先命中缓存（Commit 4）"""
+        """执行单个源请求（含指数退避重试 + Retry-After），优先命中缓存"""
+        from agent.retrieval.retry_policy import get_retry_policy
+
         # 缓存检查
         cached = self._load_spec_cache(spec)
         if cached is not None:
@@ -488,61 +557,95 @@ class AcademicDataClient:
                 papers=cached, status="ok", http_status=304,
             )
 
-        result = SourceSearchResult(
-            source=spec.source,
-            stage=stage,
-            actual_query=str(spec.params),
-            status="http_error",
-        )
+        policy = get_retry_policy()
+        cfg = policy.for_source(spec.source)
+        last_result = None
 
-        try:
-            if spec.method == "GET":
-                resp = httpx.get(spec.endpoint, params=spec.params,
-                                 timeout=timeout, follow_redirects=True)
-            else:
-                resp = httpx.post(spec.endpoint, json=spec.params,
-                                  timeout=timeout, follow_redirects=True)
+        for attempt in range(1, cfg.max_retries + 2):  # 1..max_retries+1
+            result = SourceSearchResult(
+                source=spec.source, stage=stage,
+                actual_query=str(spec.params), status="http_error",
+            )
+            exc = None
+            try:
+                if spec.method == "GET":
+                    resp = httpx.get(spec.endpoint, params=spec.params,
+                                     timeout=timeout, follow_redirects=True)
+                else:
+                    resp = httpx.post(spec.endpoint, json=spec.params,
+                                      timeout=timeout, follow_redirects=True)
+                result.http_status = resp.status_code
+                result.elapsed = resp.elapsed.total_seconds()
 
-            result.http_status = resp.status_code
-            result.elapsed = resp.elapsed.total_seconds()
+                if resp.status_code == 200:
+                    try:
+                        papers, parse_fails = self._parse_response(spec.source, resp)
+                        result.papers = papers
+                        result.partial_parse_failures = parse_fails
+                        if parse_fails > 0:
+                            logger.warning(
+                                f"[AcademicClient] {spec.source}: {parse_fails}条解析失败, "
+                                f"{len(papers)}条成功"
+                            )
+                    except Exception as e:
+                        result.status, result.retryable, result.error =                             self._classify_status(None, e, 0)
+                        result.status = "parse_error"
+                        trace = traceback.format_exc()
+                        logger.error(f"[AcademicClient] {spec.source}: 整批解析失败 - {e}\n{trace}")
+                        return result  # parse_error 不重试
 
-            if resp.status_code == 200:
-                try:
-                    papers, parse_fails = self._parse_response(spec.source, resp)
-                    result.papers = papers
-                    result.partial_parse_failures = parse_fails
-                    if parse_fails > 0:
-                        logger.warning(
-                            f"[AcademicClient] {spec.source}: {parse_fails}条解析失败, "
-                            f"{len(papers)}条成功"
-                        )
-                except Exception as e:
-                    result.status, result.retryable, result.error = self._classify_status(
-                        None, e, 0)
-                    result.status = "parse_error"
-                    trace = traceback.format_exc()
-                    logger.error(f"[AcademicClient] {spec.source}: 整批解析失败 - {e}\n{trace[:500]}")
+                result.status, result.retryable, result.error =                     self._classify_status(result.http_status, None, len(result.papers))
+
+                # 成功或不可重试 → 立即返回
+                if result.status in ("ok", "empty"):
+                    valid_empty = (
+                        result.status == "ok" and not result.papers
+                        and policy.valid_empty_requires_retry
+                        and attempt <= cfg.max_retries  # 未经过重试
+                    )
+                    if not valid_empty:
+                        # 缓存
+                        if result.status == "ok" and result.papers:
+                            self._save_spec_cache(spec, result.papers)
+                        return result
+                    # valid_empty 且首次 → 继续重试
+                    logger.info(f"[AcademicClient] {spec.source}: empty on first try, will retry")
+                elif not policy.should_retry(result.status, result.http_status, None, attempt):
                     return result
 
-            result.status, result.retryable, result.error = self._classify_status(
-                result.http_status, None, len(result.papers))
+            except httpx.TimeoutException as e:
+                exc = e
+                result.elapsed = timeout
+                result.status, result.retryable, result.error = self._classify_status(None, e, 0)
+            except httpx.HTTPStatusError as e:
+                exc = e
+                result.http_status = e.response.status_code
+                result.elapsed = e.response.elapsed.total_seconds() if e.response else 0
+                result.status, result.retryable, result.error = self._classify_status(
+                    result.http_status, e, 0)
+            except Exception as e:
+                exc = e
+                result.status, result.retryable, result.error = self._classify_status(None, e, 0)
 
-            # 缓存成功的搜索结果（Commit 4）
-            if result.status == "ok" and result.papers:
-                self._save_spec_cache(spec, result.papers)
+            if not policy.should_retry(result.status, result.http_status, exc, attempt):
+                return result
 
-        except httpx.TimeoutException as e:
-            result.elapsed = timeout
-            result.status, result.retryable, result.error = self._classify_status(None, e, 0)
-        except httpx.HTTPStatusError as e:
-            result.http_status = e.response.status_code
-            result.elapsed = e.response.elapsed.total_seconds() if e.response else 0
-            result.status, result.retryable, result.error = self._classify_status(
-                result.http_status, e, 0)
-        except Exception as e:
-            result.status, result.retryable, result.error = self._classify_status(None, e, 0)
+            # 指数退避等待
+            retry_after = None
+            if hasattr(result, 'http_status') and result.http_status == 429:
+                try:
+                    retry_after = policy.parse_retry_after(resp.headers)
+                except Exception:
+                    pass
+            delay = policy.backoff_delay(attempt, spec.source, retry_after)
+            logger.warning(
+                f"[AcademicClient] {spec.source}: retry {attempt}/{cfg.max_retries} "
+                f"after {delay:.1f}s (status={result.status})"
+            )
+            policy.sleep_fn(delay)
+            last_result = result
 
-        return result
+        return last_result or result
 
     def _parse_response(self, source: str, resp) -> tuple[list[AcademicPaper], int]:
         """路由到各源的解析器，返回 (papers, parse_failures)"""
@@ -595,7 +698,7 @@ class AcademicDataClient:
             return AcademicPaper(
                 title=title,
                 authors=authors,
-                abstract=summary_el.text.strip()[:500] if summary_el is not None and summary_el.text else "",
+                abstract=summary_el.text.strip() if summary_el is not None and summary_el.text else "",
                 url=arxiv_url,
                 arxiv_id=arxiv_id,
                 source="arXiv",
@@ -621,6 +724,23 @@ class AcademicDataClient:
                 authors.append(f"{given} {family}".strip())
             year = str(item.get("created", {}).get("date-parts", [[None]])[0][0] or "")
             doi = item.get("DOI", "")
+            raw_abstract = item.get("abstract")
+            has_field = "abstract" in item
+            logger.info(
+                "[AbstractTrace][crossref] title=%r has_abstract_field=%s raw_type=%s raw_len=%d raw_repr=%r",
+                title[:100],
+                has_field,
+                type(raw_abstract).__name__,
+                len(str(raw_abstract or "")),
+                str(raw_abstract or "")[:500],
+            )
+            abstract = AcademicDataClient._clean_abstract(raw_abstract)
+            logger.info(
+                "[AbstractTrace][crossref_cleaned] title=%r abstract_len=%d repr=%r",
+                title[:100],
+                len(abstract),
+                abstract[:500],
+            )
             return AcademicPaper(
                 title=title,
                 authors=authors,
@@ -628,6 +748,7 @@ class AcademicDataClient:
                 doi=doi,
                 venue=", ".join(item.get("container-title", [])) if item.get("container-title") else "",
                 url=f"https://doi.org/{doi}" if doi else "",
+                abstract=abstract,
                 source="Crossref",
             )
 
@@ -679,19 +800,30 @@ class AcademicDataClient:
                 auth_name = a.get("author", {}).get("display_name", "")
                 if auth_name:
                     authors.append(auth_name)
+            inverted = item.get("abstract_inverted_index")
+            logger.info(
+                "[AbstractTrace][openalex] title=%r has_inverted_index=%s term_count=%d",
+                title[:100],
+                bool(inverted),
+                len(inverted or {}),
+            )
             abstract = ""
-            if item.get("abstract_inverted_index"):
+            if inverted:
                 try:
-                    idx = item["abstract_inverted_index"]
-                    if idx:
-                        max_pos = max(max(v) for v in idx.values())
-                        words = [""] * (max_pos + 1)
-                        for word, positions in idx.items():
-                            for pos in positions:
-                                words[pos] = word
-                        abstract = " ".join(words)[:500]
+                    max_pos = max(max(v) for v in inverted.values())
+                    words = [""] * (max_pos + 1)
+                    for word, positions in inverted.items():
+                        for pos in positions:
+                            words[pos] = word
+                    abstract = " ".join(words)
                 except Exception:
                     pass
+            logger.info(
+                "[AbstractTrace][openalex_parsed] title=%r abstract_len=%d repr=%r",
+                title[:100],
+                len(abstract),
+                abstract[:500],
+            )
             return AcademicPaper(
                 title=title,
                 authors=authors,
@@ -701,6 +833,7 @@ class AcademicDataClient:
                 citation_count=item.get("cited_by_count", 0),
                 url=item.get("primary_location", {}).get("landing_page_url", ""),
                 openalex_id=item.get("id", "").split("/")[-1] if item.get("id") else "",
+                abstract=abstract,
                 source="OpenAlex",
             )
 
@@ -729,11 +862,18 @@ class AcademicDataClient:
             external_ids = item.get("externalIds", {}) or {}
             doi = external_ids.get("DOI", "")
             arxiv_id = external_ids.get("ArXiv", "")
+            raw_abstract = item.get("abstract") or ""
+            logger.info(
+                "[AbstractTrace][semantic_scholar] title=%r abstract_len=%d repr=%r",
+                title[:100],
+                len(raw_abstract),
+                raw_abstract[:500],
+            )
             return AcademicPaper(
                 title=title,
                 authors=authors,
                 year=str(item.get("year", "")),
-                abstract=(item.get("abstract") or "")[:500] if item.get("abstract") else "",
+                abstract=raw_abstract,
                 citation_count=item.get("citationCount", 0) or 0,
                 url=item.get("url", ""),
                 doi=doi,

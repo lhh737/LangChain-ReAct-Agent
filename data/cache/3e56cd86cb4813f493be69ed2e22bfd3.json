@@ -1,0 +1,100 @@
+[
+  {
+    "title": "EnsAgent: a tool-ensemble multiple Agent system for robust annotation in spatial transcriptomics",
+    "authors": [
+      "Dongjian Zhang",
+      "Mingsheng Zhang",
+      "Nuo Li",
+      "Chaoxin Zheng",
+      "Lixin Liang",
+      "Xiao Ke",
+      "Qishi Dong"
+    ],
+    "year": "2026",
+    "venue": "",
+    "doi": "10.64898/2026.03.10.710824",
+    "url": "https://www.semanticscholar.org/paper/05f48c2eb00b1c2fcd5d699451356e269d02821a",
+    "abstract": "",
+    "citation_count": 1,
+    "source": "Semantic Scholar",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": "05f48c2eb00b1c2fcd5d699451356e269d02821a"
+  },
+  {
+    "title": "ST-LLM: Spatial Transcriptomics Embedding with Large Language Models",
+    "authors": [
+      "Zhetao Xu",
+      "Xiaohua Wan",
+      "Le Li",
+      "Shuang Feng",
+      "Yiming Zhang",
+      "Fa Zhang",
+      "Bin Hu"
+    ],
+    "year": "2026",
+    "venue": "",
+    "doi": "10.1609/aaai.v40i40.40713",
+    "url": "https://www.semanticscholar.org/paper/672225972101ff217ee7274d6675e3d6065ce319",
+    "abstract": "Spatial transcriptomics provides unprecedented opportunities to analyze gene patterns while preserving spatial tissue architecture. However, traditional deep learning methods for spatial transcriptomics analysis face significant challenges in multi-modal data integration, spatial dependency modeling, and biological knowledge incorporation, while existing large language models lack explicit spatial modeling capabilities for transcriptomic data. So we first present a Spatial Transcriptomics Embedding with Large Language Models (ST-LLM), a novel simple and effective approach that transforms intricate spatial graph structures into structured textual representations suitable for large language models (LLMs). ST-LLM dynamically constructs graph adjacency construction using reinforcement learning paradigms to adaptively optimize spatial relationships, converts the resulting graphs into hierarchical textual descriptions with spatial context, and leverages pre-trained semantic understanding to generate high-dimensional spatial-aware representations. Comprehensive experiments on 14 datasets demonstrate that ST-LLM achieves comparable or better performance than traditional model. ST-LLM shows that LLMs embeddings provide a new simple and effective path to encoding spatial transcriptomics biological knowledge.",
+    "citation_count": 0,
+    "source": "Semantic Scholar",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": "672225972101ff217ee7274d6675e3d6065ce319"
+  },
+  {
+    "title": "Can Lightweight LLM Agents Improve Spatial Transcriptomics Annotation?",
+    "authors": [
+      "Sajib Acharjee Dip",
+      "Liqing Zhang"
+    ],
+    "year": "2025",
+    "venue": "",
+    "doi": "10.1101/2025.11.08.687410",
+    "url": "https://www.semanticscholar.org/paper/5be509186e34adb1e3cefff207b5ada98a1516d1",
+    "abstract": "Spatial transcriptomics (ST) links gene expression to tissue organization, yet automated annotation of spatial regions remains a persistent challenge. Recent studies have explored large language models (LLMs) for biological reasoning, but their applicability in low-compute, freetier settings is largely unexplored. We investigate whether lightweight LLM agents can improve ST annotation by integrating rule-based heuristics, prototype discovery, and multirole reasoning (Analyst–Consensus–Reviewer) within a unified agentic framework. Across six STARmap and MERFISH datasets, we benchmark single- and multi-agent variants using standard clustering and spatial coherence metrics (NMI, ARI, CHAOS, ASW). Our results show that small open-weight models such as llama3.2 and qwen3 match or slightly exceed deterministic baselines in cluster recovery, while producing more spatially consistent and interpretable predictions. These findings high-light the potential of modular LLM agents as resource-efficient components in future spatial omics annotation pipelines.",
+    "citation_count": 2,
+    "source": "Semantic Scholar",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": "5be509186e34adb1e3cefff207b5ada98a1516d1"
+  },
+  {
+    "title": "NicheAgent: LLM-Guided Zero-Shot Niche Identification for Spatial Transcriptomics",
+    "authors": [
+      "Sajib Acharjee Dip",
+      "Liqing Zhang"
+    ],
+    "year": "2025",
+    "venue": "",
+    "doi": "10.64898/2025.12.09.693287",
+    "url": "https://www.semanticscholar.org/paper/c9190a0e7c69fe0e39766a10404f13b833c1d1bd",
+    "abstract": "Spatial transcriptomics provides high-resolution maps of gene expression within intact tissue architecture, enabling the study of cellular niches, functional layers, and microenvironmental structure. Yet, accurately assigning niche or layer identities remains challenging across platforms such as 10x Visium, MERFISH, and STARmap due to batch variability, incomplete marker panels, and the lack of universally consistent domain boundaries. Existing methods including SpaGCN, BayesSpace, STAGATE, and DeepST rely heavily on supervised labels, dataset-specific fine-tuning, or deep representation learning, which often over-smooth boundaries, fail to generalize across technologies, and provide limited interpretability. We introduce NicheAgent, a zero-shot, training-free framework for spatial niche identification guided by lightweight large language models (LLMs). NicheAgent constructs interpretable nichecards for each region, encoding canonical marker genes and prototype expression centroids. Each cell is first assigned using a deterministic nearest-prototype rule based solely on gene expression and 2-hop spatial neighborhoods. Low-confidence assignments are then selectively reviewed and corrected by an LLM using only interpretable signals: marker-gene coherence, neighborhood label consistency, and an allowed label set. A final spatial smoothing step enforces local structural coherence. Applied across Visium, MERFISH, and STARmap tissues without any retraining or domain-specific supervision, NicheAgent achieves robust and biologically meaningful niche delineation, outperforming many supervised and graph-based baselines on homogeneity, completeness, and mutual information, while offering transparent reasoning traces for each corrected decision. Our results demonstrate that LLM-guided refinement, when coupled with lightweight rule-based prototypes, provides a scalable, explainable, and cross-platform alternative to heavy deep learning models for spatial transcriptomics annotation.",
+    "citation_count": 2,
+    "source": "Semantic Scholar",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": "c9190a0e7c69fe0e39766a10404f13b833c1d1bd"
+  },
+  {
+    "title": "Spatial Transcriptomics in Lung Cancer and Pulmonary Diseases: A Comprehensive Review",
+    "authors": [
+      "D. Kang",
+      "Yoonjoo Kim",
+      "Ji Hyeon Lee",
+      "Hyeong Seok Kang",
+      "Chaeuk Chung"
+    ],
+    "year": "2025",
+    "venue": "",
+    "doi": "10.3390/cancers17121912",
+    "url": "https://www.semanticscholar.org/paper/b4d6db631a991c94025cd8ea23579c8fe3e08735",
+    "abstract": "Simple Summary Spatial transcriptomics (ST) is an innovative technology that maps gene expression while preserving tissue structure, offering new perspectives on disease mechanisms in the lung. This review explores how ST has advanced our understanding of lung cancer and other pulmonary diseases. In lung cancer, ST helps reveal tumor heterogeneity, immune evasion mechanisms, and spatially distinct cellular subtypes that influence therapy response. In diseases such as pulmonary fibrosis, COPD, and asthma, ST identifies localized immune niches, fibroblast diversity, and vascular remodeling that drive disease progression. The review also compares major ST platforms like GeoMx, Visium, and Xenium and highlights current clinical trials and future directions. By integrating molecular insights with spatial context, ST holds great promise for improving diagnosis, treatment, and precision medicine in respiratory diseases.",
+    "citation_count": 17,
+    "source": "Semantic Scholar",
+    "arxiv_id": "",
+    "openalex_id": "",
+    "semantic_scholar_id": "b4d6db631a991c94025cd8ea23579c8fe3e08735"
+  }
+]

@@ -1,7 +1,15 @@
-"""Agent 工具集 — 7 个工具：本地检索 + 在线检索 + 元数据 + 引用 + 对比 + KB缺失标记 + 综述模式
+"""Agent 工具集：7 个工具 - 本地检索 + 在线检索 + 元数据 + 引用 + 对比 + KB缺失标记 + 综述模式"""
+import json
+import os
+import time
+from datetime import datetime
+from langchain_core.tools import tool
+from rag.rag_service import RagSummarizeService
+from agent.retrieval import OnlineRetrievalPipeline
+from agent.retrieval.academic_client import SearchIntent, AcademicDataClient
+from utils.path_tool import get_abs_path
+from utils.logger_handler import logger
 
-每个工具内部通过 _shared_state 检查预算配额和在线结果门控。
-"""
 import json
 import os
 import time
@@ -31,9 +39,8 @@ def _load_kb_missing_papers() -> dict:
 
 def _save_kb_missing_papers(papers: dict):
     """保存 kb_missing_papers.json"""
-    os.makedirs(os.path.dirname(KB_MISSING_PAPERS_PATH), exist_ok=True)
-    with open(KB_MISSING_PAPERS_PATH, "w", encoding="utf-8") as f:
-        json.dump({"papers": papers}, f, ensure_ascii=False, indent=2)
+    from utils.file_handler import safe_json_dump
+    safe_json_dump({"papers": papers}, KB_MISSING_PAPERS_PATH)
 
 
 def _auto_index_online_papers(papers: list, local_docs: list | None = None,
@@ -75,34 +82,8 @@ def _auto_index_online_papers(papers: list, local_docs: list | None = None,
         _save_kb_missing_papers(existing)
 
 # ── 共享状态（由 ReactAgent.execute_stream() 注入）──
-_shared_state: dict = {
-    "budget": [0],
-    "retrieval_ref": [None],
-    "max_budget": 15,
-}
 
 
-def _set_shared_state(budget_counter: list, retrieval_ref: list, max_budget: int = 15):
-    """由 ReactAgent 在每次 execute_stream 入口调用，重置预算并设置状态引用"""
-    _shared_state["budget"] = budget_counter
-    _shared_state["retrieval_ref"] = retrieval_ref
-    _shared_state["max_budget"] = max_budget
-
-
-def _check_budget() -> str | None:
-    """Return error string if budget exhausted, else None"""
-    _shared_state["budget"][0] += 1
-    if _shared_state["budget"][0] > _shared_state["max_budget"]:
-        return "[TOOL_BUDGET_EXHAUSTED] 工具调用次数已达上限，请基于已有信息直接回答。"
-    return None
-
-
-def _check_online_flag() -> str | None:
-    """Return block string if online results already obtained, else None"""
-    ref = _shared_state["retrieval_ref"][0]
-    if ref is not None and getattr(ref, "online_results_obtained", False):
-        return "[KB_SEARCH_BLOCKED] 已获取在线结果，请基于在线结果直接回答。"
-    return None
 
 
 def _log_tool_call(name: str, query: str):
@@ -126,56 +107,37 @@ def _load_kb_missing_index() -> set:
 
 
 def _save_kb_missing_index(index: set):
-    os.makedirs(os.path.dirname(KB_MISSING_INDEX_PATH), exist_ok=True)
-    with open(KB_MISSING_INDEX_PATH, "w", encoding="utf-8") as f:
-        json.dump({"titles": sorted(index), "updated_at": str(len(index))}, f, ensure_ascii=False, indent=2)
+    from utils.file_handler import safe_json_dump
+    safe_json_dump({"titles": sorted(index), "updated_at": str(len(index))}, KB_MISSING_INDEX_PATH)
 
 
 # ── 在线检索内部函数（Commit 2: SearchIntent 驱动）──
 
-def _search_academic_papers_internal(query: str, candidate: str = "") -> str:
-    """内部在线检索：自动构建 SearchIntent 并走三阶段管线。
-    若 candidate 非空 → Stage 1 candidate-only 检索；
-    若 candidate 为空 → 走旧逻辑 run()。"""
-    if candidate:
-        candidate_type = AcademicDataClient._infer_candidate_type(candidate)
-        intent = SearchIntent(
-            candidate=candidate,
-            candidate_type=candidate_type,
-            keyword="",
-            fallback_query=query,
-        )
-        _log_tool_call("search_academic_papers", f"candidate={candidate} type={candidate_type} fallback={query[:100]}")
-        start = time.time()
-        result = online_pipeline.run_with_intent(intent)
-        _log_tool_result("search_academic_papers", result, start)
-    else:
-        _log_tool_call("search_academic_papers", query)
-        start = time.time()
-        result = online_pipeline.run(query)
-        _log_tool_result("search_academic_papers", result, start)
+def _search_academic_papers_internal(query: str, candidate: str = "", ctx=None) -> str:
+    """内部在线检索：委托 search_academic_papers_core，保持字符串返回兼容。"""
+    from agent.retrieval.retrieval_pipeline import search_academic_papers_core
+
+    _log_tool_call("search_academic_papers",
+                   f"candidate={candidate}" if candidate else query)
+    start = time.time()
+    result = search_academic_papers_core(query, candidate)
+    _log_tool_result("search_academic_papers", result.text, start)
 
     # Auto-index
-    try:
-        scored = online_pipeline.get_last_scored()
-        if scored:
-            _auto_index_online_papers([], scored=scored, min_score=0.70)
-    except Exception:
-        pass
+    if result.scored_results:
+        _auto_index_online_papers([], scored=list(result.scored_results), min_score=0.70)
 
     # 标记在线搜索结果已获取
-    ref = _shared_state["retrieval_ref"][0]
-    if ref is not None:
-        ref.online_results_obtained = True
+    if ctx is not None:
+        ctx.retrieval_state.online_results_obtained = True
 
-    return result
+    return result.text
 
 
 # ── 7 个工具 ──
 
 @tool(description="从本地论文向量库中检索相关论文全文片段，返回带编号引用[N]的学术资料内容（含论文标题、章节、页码）。适用于查找具体方法、实验数据、结论等。")
 def academic_search(query: str) -> str:
-    err = _check_budget()
     if err:
         return err
     _log_tool_call("academic_search", query)
@@ -187,7 +149,6 @@ def academic_search(query: str) -> str:
 
 @tool(description="在线检索学术数据库（arXiv/OpenAlex/DBLP/Crossref/Semantic Scholar），查找最新发表的论文元数据（标题/作者/摘要/来源）。适用于查找尚未加入本地知识库的最新论文、验证论文身份。")
 def search_academic_papers(query: str) -> str:
-    err = _check_budget() or _check_online_flag()
     if err:
         return err
     return _search_academic_papers_internal(query, candidate=query)
@@ -195,7 +156,6 @@ def search_academic_papers(query: str) -> str:
 
 @tool(description="根据精确论文标题获取完整元数据：全部作者、摘要、发表年份、DOI、期刊/会议、链接。适用于获取某篇已知论文的详细信息。")
 def fetch_paper_metadata(title: str) -> str:
-    err = _check_budget() or _check_online_flag()
     if err:
         return err
     _log_tool_call("fetch_paper_metadata", title)
@@ -238,7 +198,6 @@ def fetch_paper_metadata(title: str) -> str:
 
 @tool(description="根据精确论文标题获取引用计数。适用于了解某篇论文的学术影响力。")
 def fetch_citation_info(title: str) -> str:
-    err = _check_budget() or _check_online_flag()
     if err:
         return err
     _log_tool_call("fetch_citation_info", title)
@@ -264,11 +223,14 @@ def fetch_citation_info(title: str) -> str:
     return result
 
 
-@tool(description="同时检索并对比多篇论文（2-4篇）。对每篇论文分别查找本地知识库片段和在线元数据，返回结构化对比信息。标题用分号(;)分隔。适用于比较不同方法的异同优劣。")
-def compare_papers(titles_str: str) -> str:
-    err = _check_budget()
-    if err:
-        return err
+def compare_papers(titles_str: str, ctx=None) -> str:
+    """同时检索并对比多篇论文（2-4篇）。对每篇论文分别查找本地知识库片段和在线元数据。
+    标题用分号(;)分隔。ctx 可传入 ExecutionContext 用于预算检查。"""
+    if ctx is not None and not ctx.policy.try_consume():
+        return "[TOOL_BUDGET_EXHAUSTED] 工具调用次数已达上限，请基于已有信息直接回答。"
+    if ctx is None:
+        if err:
+            return err
     _log_tool_call("compare_papers", titles_str)
 
     titles = [t.strip() for t in titles_str.split(";") if t.strip()]
@@ -322,7 +284,6 @@ def compare_papers(titles_str: str) -> str:
 
 @tool(description="将某篇论文标记为「本地知识库缺失」。后续检索到该论文时会自动跳过本地搜索，直接引导使用在线工具。")
 def mark_paper_not_in_kb(title: str) -> str:
-    err = _check_budget()
     if err:
         return err
     _log_tool_call("mark_paper_not_in_kb", title)
@@ -339,7 +300,6 @@ def mark_paper_not_in_kb(title: str) -> str:
 
 @tool(description="触发文献综述模式。对某个研究领域进行系统性搜索和全面归纳。调用后 Agent 将切换为综述视角，进行多轮广泛检索。")
 def start_literature_review(topic: str) -> str:
-    err = _check_budget()
     if err:
         return err
     _log_tool_call("start_literature_review", topic)

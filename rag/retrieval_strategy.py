@@ -443,7 +443,10 @@ class Reranker:
 
 class HybridScorer:
     """混合保底打分器：BM25(45%) + Reranker(25%) + Keyword(20%) + Metadata(10%)
-    Reranker 不作为硬截断器，BM25 高分 chunk 受保护不被洗掉"""
+    Reranker 不作为硬截断器，BM25 高分 chunk 受保护不被洗掉。
+
+    生产路径使用 HybridRetriever → Reranker.rerank()；
+    本类保留用于 evaluation/ 下的检索消融实验对比，非生产检索链路。"""
 
     def __init__(self, bm25_store: "BM25Store", reranker: Reranker):
         self.bm25 = bm25_store

@@ -1,0 +1,78 @@
+[
+  {
+    "title": "Affordance-Compiled Intelligence: Observable-Only Cognitive Impedance Matching for No-Meta LLM-Integrated Systems",
+    "authors": [
+      "Patrick Lewis",
+      "Ethan Perez",
+      "Aleksandara Piktus",
+      "Fabio Petroni",
+      "Vladimir Karpukhin"
+    ],
+    "year": "2026",
+    "venue": "arXiv (Cornell University)",
+    "doi": "https://doi.org/10.5281/zenodo.18717227",
+    "url": "http://arxiv.org/abs/2005.11401",
+    "abstract": "",
+    "citation_count": 3029,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W3027879771",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Neuromodulatory Control Networks (NCNs): A Biologically Inspired Architecture for Dynamic LLM Processing",
+    "authors": [
+      "Morgan, Michael Christian"
+    ],
+    "year": "2025",
+    "venue": "Zenodo (CERN European Organization for Nuclear Research)",
+    "doi": "https://doi.org/10.5281/zenodo.17621804",
+    "url": "https://doi.org/10.5281/zenodo.17621804",
+    "abstract": "",
+    "citation_count": 1406,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4394666973",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "A survey on large language model (LLM) security and privacy: The Good, The Bad, and The Ugly",
+    "authors": [
+      "Yifan Yao",
+      "Jinhao Duan",
+      "Kaidi Xu",
+      "Yuanfang Cai",
+      "Zhibo Sun"
+    ],
+    "year": "2024",
+    "venue": "High-Confidence Computing",
+    "doi": "https://doi.org/10.1016/j.hcc.2024.100211",
+    "url": "https://doi.org/10.1016/j.hcc.2024.100211",
+    "abstract": "",
+    "citation_count": 908,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4392353733",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning",
+    "authors": [
+      "Daya Guo",
+      "Dejian Yang",
+      "Haowei Zhang",
+      "Junxiao Song",
+      "Peiyi Wang"
+    ],
+    "year": "2025",
+    "venue": "Nature",
+    "doi": "https://doi.org/10.1038/s41586-025-09422-z",
+    "url": "https://doi.org/10.1038/s41586-025-09422-z",
+    "abstract": "",
+    "citation_count": 697,
+    "source": "OpenAlex",
+    "arxiv_id": "",
+    "openalex_id": "W4414281281",
+    "semantic_scholar_id": ""
+  }
+]

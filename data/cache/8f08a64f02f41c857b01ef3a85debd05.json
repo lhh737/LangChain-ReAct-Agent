@@ -1,0 +1,104 @@
+[
+  {
+    "title": "A selective review of recent developments in spatially variable gene detection for spatial transcriptomics",
+    "authors": [
+      "Sikta Das Adhikari",
+      "Jiaxin Yang",
+      "Jianrong Wang",
+      "Yuehua Cui"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2311.13801v1",
+    "abstract": "With the emergence of advanced spatial transcriptomic technologies, there has been a surge in research papers dedicated to analyzing spatial transcriptomics data, resulting in significant contributions to our understanding of biology. The initial stage of downstream analysis of spatial transcriptomic data has centered on identifying spatially variable genes (SVGs) or genes expressed with specific spatial patterns across the tissue. SVG detection is an important task since many downstream analyses depend on these selected SVGs. Over the past few years, a plethora of new methods have been proposed for the detection of SVGs, accompanied by numerous innovative concepts and discussions. This article provides a selective review of methods and their practical implementations, offering valuable insights into the current literature in this field.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2311.13801v1",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Analysis and visualization of spatial transcriptomic data",
+    "authors": [
+      "Boxiang Liu",
+      "Yanjun Li",
+      "Liang Zhang"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2110.07787v3",
+    "abstract": "Human and animal tissues consist of heterogeneous cell types that organize and interact in highly structured manners. Bulk and single-cell sequencing technologies remove cells from their original microenvironments, resulting in a loss of spatial information. Spatial transcriptomics is a recent technological innovation that measures transcriptomic information while preserving spatial information. Spatial transcriptomic data can be generated in several ways. RNA molecules are measured by in situ sequencing, in situ hybridization, or spatial barcoding to recover original spatial coordinates. The inclusion of spatial information expands the range of possibilities for analysis and visualization, and spurred the development of numerous novel methods. In this review, we summarize the core concepts of spatial genomics technology and provide a comprehensive review of current analysis and visualization methods for spatial transcriptomics.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2110.07787v3",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Statistical Power Analysis for Designing Bulk, Single-Cell, and Spatial Transcriptomics Experiments: Review, Tutorial, and Perspectives",
+    "authors": [
+      "Hyeongseon Jeon",
+      "Juan Xie",
+      "Yeseul Jeon",
+      "Kyeong Joo Jung",
+      "Arkobrato Gupta",
+      "Won Chang",
+      "Dongjun Chung"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2301.02918v1",
+    "abstract": "Gene expression profiling technologies have been used in various applications such as cancer biology. The development of gene expression profiling has expanded the scope of target discovery in transcriptomic studies, and each technology produces data with distinct characteristics. In order to guarantee biologically meaningful findings using transcriptomic experiments, it is important to consider various experimental factors in a systematic way through statistical power analysis. In this paper, we review and discuss the power analysis for three types of gene expression profiling technologies from a practical standpoint, including bulk RNA-seq, single-cell RNA-seq, and high-throughput spatial transcriptomics. Specifically, we describe the existing power analysis tools for each research objective for each of the bulk RNA-seq and scRNA-seq experiments, along with recommendations. On the other hand, since there are no power analysis tools for high-throughput spatial transcriptomics at this point, we instead investigate the factors that can influence power analysis.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2301.02918v1",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Emerging Artificial Intelligence Applications in Spatial Transcriptomics Analysis",
+    "authors": [
+      "Yijun Li",
+      "Stefan Stanojevic",
+      "Lana X. Garmire"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2203.09664v1",
+    "abstract": "Spatial transcriptomics (ST) has advanced significantly in the last few years. Such advancement comes with the urgent need for novel computational methods to handle the unique challenges of ST data analysis. Many artificial intelligence (AI) methods have been developed to utilize various machine learning and deep learning techniques for computational ST analysis. This review provides a comprehensive and up-to-date survey of current AI methods for ST analysis.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2203.09664v1",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  },
+  {
+    "title": "Imaging-anchored Multiomics in Cardiovascular Disease: Integrating Cardiac Imaging, Bulk, Single-cell, and Spatial Transcriptomics",
+    "authors": [
+      "Minh H. N. Le",
+      "Tuan Vinh",
+      "Thanh-Huy Nguyen",
+      "Tao Li",
+      "Bao Quang Gia Le",
+      "Han H. Huynh",
+      "Monika Raj",
+      "Carl Yang",
+      "Min Xu",
+      "Nguyen Quoc Khanh Le"
+    ],
+    "year": "",
+    "venue": "",
+    "doi": "",
+    "url": "http://arxiv.org/abs/2601.07871v1",
+    "abstract": "Cardiovascular disease arises from interactions between inherited risk, molecular programmes, and tissue-scale remodelling that are observed clinically through imaging. Health systems now routinely generate large volumes of cardiac MRI, CT and echocardiography together with bulk, single-cell and spatial transcriptomics, yet these data are still analysed in separate pipelines. This review examines joint representations that link cardiac imaging phenotypes to transcriptomic and spatially resolved molecular states. An imaging-anchored perspective is adopted in which echocardiography, cardiac MRI and CT define a spatial phenotype of the heart, and bulk, single-cell and spatial transcriptomics provide cell-type- and location-specific molecular context. The biological and technical characteristics of these modalities are first summarised, and representation-learning strategies for each are outlined. Multimodal fusion approaches are reviewed, with emphasis on handling missing data, limited sample size, and batch effects. Finally, integrative pipelines for radiogenomics, spatial molecular alignment, and image-based prediction of gene expression are discussed, together with common failure modes, practical considerations, and open challenges. Spatial multiomics of human myocardium and atherosclerotic plaque, single-cell and spatial foundation models, and multimodal medical foundation models are collectively bringing imaging-anchored multiomics closer to large-scale cardiovascular translation.",
+    "citation_count": 0,
+    "source": "arXiv",
+    "arxiv_id": "2601.07871v1",
+    "openalex_id": "",
+    "semantic_scholar_id": ""
+  }
+]
