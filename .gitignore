@@ -44,7 +44,7 @@ chroma_db/
 # 知识库文档（仅本地保留）
 data/*.pdf
 data/*.txt
-data/cache/*
+data/cache/*.json
 
 # Optional: if you later generate temp reports locally
 tmp/
