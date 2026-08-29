@@ -63,8 +63,9 @@ class RetryPolicy:
         return self.sources.get(source, self.default)
 
     def should_retry(self, status: str, http_status: int | None,
-                     exception: Exception | None, attempt: int) -> bool:
-        cfg = self.default  # 状态判断不按源区分
+                     exception: Exception | None, attempt: int,
+                     source: str = "") -> bool:
+        cfg = self.for_source(source)
         if attempt > cfg.max_retries:
             return False
         if exception is not None:

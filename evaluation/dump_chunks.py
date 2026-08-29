@@ -2,13 +2,17 @@
 import json
 import chromadb
 
-CONFIG_PATH = "/home/hgs/project/LangChain-ReAct-Agent/chroma_db"
-JSONL_PATH = "/home/hgs/project/LangChain-ReAct-Agent/evaluation/rag_eval_20.jsonl"
+from utils.config_handler import chroma_conf
+from utils.path_tool import get_abs_path
 
 
 def main():
-    client = chromadb.PersistentClient(path=CONFIG_PATH)
-    collection = client.get_collection("agent")
+    chroma_path = get_abs_path(chroma_conf.get("persist_directory", "chroma_db"))
+    collection_name = chroma_conf.get("collection_name", "papers")
+    jsonl_path = get_abs_path("evaluation/rag_eval_20.jsonl")
+
+    client = chromadb.PersistentClient(path=chroma_path)
+    collection = client.get_collection(collection_name)
     all_chunks = collection.get(include=["metadatas", "documents"])
 
     id_map = {}
@@ -19,7 +23,7 @@ def main():
 
     print(f"ChromaDB 共 {len(id_map)} 个 chunk\n")
 
-    with open(JSONL_PATH, "r", encoding="utf-8") as f:
+    with open(jsonl_path, "r", encoding="utf-8") as f:
         questions = [json.loads(line) for line in f if line.strip()]
 
     for q in questions:

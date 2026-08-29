@@ -1,5 +1,5 @@
  # 1. 清除旧数据
-  cd /home/hgs/project/LangChain-ReAct-Agent
+  cd <project_root>
   rm -rf chroma_db/ md5.txt bm25_index.pkl data/abbreviation_index.json data/index_manifest.json data/academic_cache/
 
   # 2. 重建 ChromaDB（分块+入库）

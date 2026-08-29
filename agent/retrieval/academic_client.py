@@ -610,7 +610,7 @@ class AcademicDataClient:
                         return result
                     # valid_empty 且首次 → 继续重试
                     logger.info(f"[AcademicClient] {spec.source}: empty on first try, will retry")
-                elif not policy.should_retry(result.status, result.http_status, None, attempt):
+                elif not policy.should_retry(result.status, result.http_status, None, attempt, spec.source):
                     return result
 
             except httpx.TimeoutException as e:
@@ -627,7 +627,7 @@ class AcademicDataClient:
                 exc = e
                 result.status, result.retryable, result.error = self._classify_status(None, e, 0)
 
-            if not policy.should_retry(result.status, result.http_status, exc, attempt):
+            if not policy.should_retry(result.status, result.http_status, exc, attempt, spec.source):
                 return result
 
             # 指数退避等待
