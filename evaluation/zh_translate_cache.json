@@ -1,0 +1,18 @@
+{
+  "Compare PoisonedRAG and Machine Against the RAG: how do they each attack RAG systems, and what are the key differences in their threat models?": "Compare PoisonedRAG and Machine Against the RAG: how do they each attack RAG systems, and what are the key differences in their threat models?",
+  "Compare FlatD, MACO, and Hardening DNN Binaries: what different approaches do they take to protect DNN models from reverse engineering?": "Compare FlatD, MACO, and Hardening DNN Binaries: what different approaches do they take to protect DNN models from reverse engineering?",
+  "How does AgentSentinel provide end-to-end and real-time security defense for LLM agents? What is its core architecture?": "How does AgentSentinel provide end-to-end and real-time security defense for LLM agents? What is its core architecture?",
+  "What is Appatch's automated adaptive prompting approach? How does it improve program repair or code generation?": "What is Appatch's automated adaptive prompting approach? How does it improve program repair or code generation?",
+  "How does CodeLLM-Devkit contextualize code LLMs? What framework components does it provide for improving code intelligence tasks?": "How does CodeLLM-Devkit contextualize code LLMs? What framework components does it provide for improving code intelligence tasks?",
+  "How does BTD recover DNN model specifications from compiled x86 executables? What techniques does it use and what are the key evaluation results?": "How does BTD recover DNN model specifications from compiled x86 executables? What techniques does it use and what are the key evaluation results?",
+  "What are the main categories and taxonomy of pitfalls when using LLMs for code intelligence, according to the Pitfalls survey?": "What are the main categories and taxonomy of pitfalls when using LLMs for code intelligence, according to the Pitfalls survey?",
+  "How does FlippedRAG achieve black-box opinion manipulation? What is its attack methodology and what access does it require?": "How does FlippedRAG achieve black-box opinion manipulation? What is its attack methodology and what access does it require?",
+  "比较 PoisonedRAG 和 Machine Against the RAG：它们各自如何攻击 RAG 系统？威胁模型的关键区别是什么？": "Compare PoisonedRAG and Machine Against the RAG: how they each attack the RAG system? What are the key differences in threat models?",
+  "比较 FlatD、MACO 和 Hardening DNN Binaries：它们各自采用什么方法保护 DNN 模型免受逆向工程攻击？": "Compare FlatD, MACO, and Hardening DNN Binaries: what methods do they each use to protect DNN models from reverse engineering attacks?",
+  "AgentSentinel 如何为 LLM 代理提供端到端的实时安全防御？其核心架构是什么？": "How does AgentSentinel provide end-to-end real-time security defense for LLM agents? What is its core architecture?",
+  "Appatch 的自动自适应提示方法是什么？它如何改进程序修复或代码生成？": "What is the automatic adaptive prompting method of Appatch? How does it improve program repair or code generation?",
+  "CodeLLM-Devkit 如何为代码 LLM 提供上下文？它为改进代码智能任务提供了哪些框架组件？": "How does CodeLLM-Devkit provide context for code LLMs? What framework components does it provide for improving code intelligence tasks?",
+  "BTD 如何从编译后的 x86 可执行文件中恢复 DNN 模型规格？它使用了哪些技术，关键评估结果是什么？": "How does BTD recover DNN model specifications from compiled x86 executables? What techniques does it use, and what are the key evaluation results?",
+  "根据 Pitfalls 综述，使用 LLM 进行代码智能时的主要陷阱类别和分类体系是什么？": "According to the Pitfalls survey, what are the main categories and classification system of pitfalls when using LLM for code intelligence?",
+  "FlippedRAG 如何实现黑盒观点操纵？其攻击方法是什么？需要什么访问权限？": "How does FlippedRAG achieve black-box opinion manipulation? What is its attack method? What access permissions are required?"
+}

@@ -43,3 +43,14 @@ def pdf_loader(filepath:str,passwd=None)->list[Document]:
 def txt_loader(filepath:str)->list[Document]:
 
     return TextLoader(filepath,encoding="utf-8").load()
+
+def safe_json_dump(data: dict, path: str):
+    """原子写入 JSON 文件，始终带 indent=2 格式化"""
+    import os, json
+    tmp = path + ".tmp"
+    dirpath = os.path.dirname(path)
+    if dirpath:
+        os.makedirs(dirpath, exist_ok=True)
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, path)

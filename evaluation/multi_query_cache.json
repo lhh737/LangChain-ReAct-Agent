@@ -1,0 +1,320 @@
+{
+  "cross_001_en": {
+    "query_type": "comparison",
+    "entities": [
+      "PoisonedRAG",
+      "Machine Against the RAG"
+    ],
+    "subqueries": [
+      {
+        "entity": "PoisonedRAG",
+        "query": "PoisonedRAG attack method on RAG systems threat model"
+      },
+      {
+        "entity": "Machine Against the RAG",
+        "query": "Machine Against the RAG attack RAG threat model differences"
+      }
+    ]
+  },
+  "cross_002_en": {
+    "query_type": "comparison",
+    "entities": [
+      "FlatD",
+      "MACO",
+      "Hardening DNN Binaries"
+    ],
+    "subqueries": [
+      {
+        "entity": "FlatD",
+        "query": "FlatD approach to protect DNN models from reverse engineering"
+      },
+      {
+        "entity": "MACO",
+        "query": "MACO method for protecting DNN models against reverse engineering"
+      },
+      {
+        "entity": "Hardening DNN Binaries",
+        "query": "Hardening DNN Binaries technique to prevent reverse engineering of DNNs"
+      }
+    ]
+  },
+  "single_001_en": {
+    "query_type": "single",
+    "entities": [
+      "AgentSentinel"
+    ],
+    "subqueries": [
+      {
+        "entity": "AgentSentinel",
+        "query": "AgentSentinel end-to-end security defense for LLM agents"
+      },
+      {
+        "entity": "AgentSentinel",
+        "query": "AgentSentinel real-time security defense mechanism"
+      },
+      {
+        "entity": "AgentSentinel",
+        "query": "AgentSentinel core architecture design"
+      }
+    ]
+  },
+  "single_002_en": {
+    "query_type": "single",
+    "entities": [
+      "Appatch"
+    ],
+    "subqueries": [
+      {
+        "entity": "Appatch",
+        "query": "Appatch automated adaptive prompting approach architecture"
+      },
+      {
+        "entity": "Appatch",
+        "query": "Appatch improves program repair via adaptive prompting"
+      },
+      {
+        "entity": "Appatch",
+        "query": "Appatch improves code generation using adaptive prompting"
+      }
+    ]
+  },
+  "single_003_en": {
+    "query_type": "single",
+    "entities": [
+      "CodeLLM-Devkit"
+    ],
+    "subqueries": [
+      {
+        "entity": "CodeLLM-Devkit",
+        "query": "CodeLLM-Devkit contextualization approach for code LLMs"
+      },
+      {
+        "entity": "CodeLLM-Devkit",
+        "query": "CodeLLM-Devkit framework components for code intelligence"
+      },
+      {
+        "entity": "CodeLLM-Devkit",
+        "query": "CodeLLM-Devkit evaluation on code intelligence tasks"
+      }
+    ]
+  },
+  "single_004_en": {
+    "query_type": "single",
+    "entities": [
+      "BTD"
+    ],
+    "subqueries": [
+      {
+        "entity": "BTD",
+        "query": "BTD architecture for recovering DNN model specifications from x86 executables"
+      },
+      {
+        "entity": "BTD",
+        "query": "BTD techniques used to extract DNN model specifications from compiled binaries"
+      },
+      {
+        "entity": "BTD",
+        "query": "BTD key evaluation results on DNN model recovery from x86 executables"
+      }
+    ]
+  },
+  "single_005_en": {
+    "query_type": "single",
+    "entities": [
+      "Pitfalls survey"
+    ],
+    "subqueries": [
+      {
+        "entity": "Pitfalls survey",
+        "query": "Pitfalls survey taxonomy of pitfalls for LLMs in code intelligence"
+      },
+      {
+        "entity": "Pitfalls survey",
+        "query": "Pitfalls survey main categories of pitfalls when using LLMs for code"
+      },
+      {
+        "entity": "Pitfalls survey",
+        "query": "Pitfalls survey classification of pitfalls in code intelligence with LLMs"
+      }
+    ]
+  },
+  "single_006_en": {
+    "query_type": "single",
+    "entities": [
+      "FlippedRAG"
+    ],
+    "subqueries": [
+      {
+        "entity": "FlippedRAG",
+        "query": "FlippedRAG black-box opinion manipulation attack methodology"
+      },
+      {
+        "entity": "FlippedRAG",
+        "query": "FlippedRAG attack access requirements and assumptions"
+      },
+      {
+        "entity": "FlippedRAG",
+        "query": "FlippedRAG retrieval manipulation mechanism for opinion change"
+      }
+    ]
+  },
+  "cross_001_zh": {
+    "query_type": "comparison",
+    "entities": [
+      "PoisonedRAG",
+      "Machine Against the RAG"
+    ],
+    "subqueries": [
+      {
+        "entity": "PoisonedRAG",
+        "query": "PoisonedRAG attack method on RAG systems threat model details"
+      },
+      {
+        "entity": "Machine Against the RAG",
+        "query": "Machine Against the RAG attack method on RAG systems threat model details"
+      }
+    ]
+  },
+  "cross_002_zh": {
+    "query_type": "comparison",
+    "entities": [
+      "FlatD",
+      "MACO",
+      "Hardening DNN Binaries"
+    ],
+    "subqueries": [
+      {
+        "entity": "FlatD",
+        "query": "FlatD method for protecting DNN models from reverse engineering attacks"
+      },
+      {
+        "entity": "MACO",
+        "query": "MACO approach to defend DNN models against reverse engineering"
+      },
+      {
+        "entity": "Hardening DNN Binaries",
+        "query": "Hardening DNN Binaries technique for protecting DNN models from reverse engineering"
+      }
+    ]
+  },
+  "single_001_zh": {
+    "query_type": "single",
+    "entities": [
+      "AgentSentinel"
+    ],
+    "subqueries": [
+      {
+        "entity": "AgentSentinel",
+        "query": "AgentSentinel architecture for end-to-end real-time security defense in LLM agents"
+      },
+      {
+        "entity": "AgentSentinel",
+        "query": "AgentSentinel core components and mechanisms for real-time defense"
+      },
+      {
+        "entity": "AgentSentinel",
+        "query": "AgentSentinel evaluation results and performance in real-time security"
+      }
+    ]
+  },
+  "single_002_zh": {
+    "query_type": "single",
+    "entities": [
+      "Appatch"
+    ],
+    "subqueries": [
+      {
+        "entity": "Appatch",
+        "query": "Appatch automatic adaptive prompting method architecture and details"
+      },
+      {
+        "entity": "Appatch",
+        "query": "Appatch improvement on program repair performance evaluation"
+      },
+      {
+        "entity": "Appatch",
+        "query": "Appatch enhancement for code generation tasks mechanism"
+      }
+    ]
+  },
+  "single_003_zh": {
+    "query_type": "single",
+    "entities": [
+      "CodeLLM-Devkit"
+    ],
+    "subqueries": [
+      {
+        "entity": "CodeLLM-Devkit",
+        "query": "CodeLLM-Devkit context provision mechanism for code LLM"
+      },
+      {
+        "entity": "CodeLLM-Devkit",
+        "query": "CodeLLM-Devkit framework components for code intelligence tasks"
+      },
+      {
+        "entity": "CodeLLM-Devkit",
+        "query": "CodeLLM-Devkit architecture and design for code LLM support"
+      }
+    ]
+  },
+  "single_004_zh": {
+    "query_type": "single",
+    "entities": [
+      "BTD"
+    ],
+    "subqueries": [
+      {
+        "entity": "BTD",
+        "query": "BTD method for recovering DNN model specifications from compiled x86 binaries"
+      },
+      {
+        "entity": "BTD",
+        "query": "Techniques used in BTD for DNN model extraction from x86 executables"
+      },
+      {
+        "entity": "BTD",
+        "query": "Key evaluation results of BTD on DNN model recovery from x86 binaries"
+      }
+    ]
+  },
+  "single_005_zh": {
+    "query_type": "single",
+    "entities": [
+      "Pitfalls"
+    ],
+    "subqueries": [
+      {
+        "entity": "Pitfalls",
+        "query": "Pitfalls taxonomy of pitfalls in code intelligence using LLMs"
+      },
+      {
+        "entity": "Pitfalls",
+        "query": "Pitfalls classification system for LLM-based code intelligence"
+      },
+      {
+        "entity": "Pitfalls",
+        "query": "Pitfalls survey main categories of pitfalls in code intelligence with LLMs"
+      }
+    ]
+  },
+  "single_006_zh": {
+    "query_type": "single",
+    "entities": [
+      "FlippedRAG"
+    ],
+    "subqueries": [
+      {
+        "entity": "FlippedRAG",
+        "query": "FlippedRAG black-box opinion manipulation attack method"
+      },
+      {
+        "entity": "FlippedRAG",
+        "query": "FlippedRAG attack architecture and mechanism"
+      },
+      {
+        "entity": "FlippedRAG",
+        "query": "FlippedRAG required access permissions for attack"
+      }
+    ]
+  }
+}

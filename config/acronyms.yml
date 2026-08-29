@@ -1,0 +1,51 @@
+# 学术论文常见缩写展开词表
+# 格式: 缩写: 全称
+# 用户可按需增减
+
+DNN: Deep Neural Network
+CNN: Convolutional Neural Network
+RNN: Recurrent Neural Network
+LSTM: Long Short-Term Memory
+GRU: Gated Recurrent Unit
+NLP: Natural Language Processing
+CV: Computer Vision
+RL: Reinforcement Learning
+GAN: Generative Adversarial Network
+VAE: Variational Autoencoder
+BERT: Bidirectional Encoder Representations from Transformers
+GPT: Generative Pre-trained Transformer
+LLM: Large Language Model
+MLM: Masked Language Modeling
+NER: Named Entity Recognition
+QA: Question Answering
+MT: Machine Translation
+ASR: Automatic Speech Recognition
+TTS: Text-to-Speech
+IR: Information Retrieval
+KG: Knowledge Graph
+GNN: Graph Neural Network
+SVM: Support Vector Machine
+PCA: Principal Component Analysis
+SGD: Stochastic Gradient Descent
+Adam: Adaptive Moment Estimation
+ReLU: Rectified Linear Unit
+SOTA: State-of-the-Art
+MHA: Multi-Head Attention
+FFN: Feed-Forward Network
+ViT: Vision Transformer
+CLIP: Contrastive Language-Image Pre-training
+LoRA: Low-Rank Adaptation
+RLHF: Reinforcement Learning from Human Feedback
+CoT: Chain-of-Thought
+ICL: In-Context Learning
+RAG: Retrieval-Augmented Generation
+MDP: Markov Decision Process
+EM: Expectation Maximization
+MLE: Maximum Likelihood Estimation
+MAP: Maximum A Posteriori
+KL: Kullback-Leibler
+ELBO: Evidence Lower Bound
+MCMC: Markov Chain Monte Carlo
+TPU: Tensor Processing Unit
+GPU: Graphics Processing Unit
+API: Application Programming Interface

@@ -1,1 +1,39 @@
-external_data_path: data/external/records.csv
+# Agent 配置文件（科研论文问答系统）
+llm_timeout: 120                    # LLM 调用超时 (秒)
+llm_max_retries: 3                  # LLM 调用最大重试次数
+
+# 在线学术检索重试策略
+retrieval_retry:
+  default:
+    max_retries: 2                  # 最大重试次数（共 1+max_retries 次尝试）
+    base_delay: 1.0                 # 指数退避基数（秒）
+    max_delay: 30.0                 # 单次退避上限（秒）
+    jitter: 0.25                    # 抖动系数（±25%）
+  sources:
+    arxiv:
+      max_retries: 2
+      base_delay: 3.0               # arXiv 较慢，加长间隔
+    crossref:
+      max_retries: 1
+    dblp:
+      max_retries: 2
+      base_delay: 2.0
+    openalex:
+      max_retries: 1
+    semantic_scholar:
+      max_retries: 2
+      base_delay: 1.5
+  retry_on_status: [429, 502, 503, 504]
+  retry_on_exceptions:
+    - TimeoutException
+    - ConnectError
+    - ReadError
+    - RemoteProtocolError
+  valid_empty_requires_retry: true  # 首次 empty 不缓存，经重试验证后才缓存
+
+# 在线学术检索并行配置
+retrieval_parallel:
+  enabled: true                     # 五源并行检索
+  max_workers: 3                    # min(3, 5) = 3
+  per_stage_timeout: 30.0           # 单阶段总超时（秒）
+  continue_on_source_error: true

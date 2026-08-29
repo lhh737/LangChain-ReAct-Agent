@@ -1,0 +1,1 @@
+from .retrieval_pipeline import OnlineRetrievalPipeline

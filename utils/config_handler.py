@@ -30,6 +30,21 @@ def load_agent_config(config_path: str = get_abs_path("config/agent.yml"), encod
         return yaml.load(f, Loader=yaml.FullLoader)
 
 
+def load_acronyms_config(config_path: str = get_abs_path("config/acronyms.yml"), encoding: str = "utf-8"):
+    with open(config_path, "r", encoding=encoding) as f:
+        return yaml.load(f, Loader=yaml.FullLoader)
+
+
+def load_domain_terms_config(config_path: str = get_abs_path("config/domain_terms.yml"), encoding: str = "utf-8"):
+    with open(config_path, "r", encoding=encoding) as f:
+        return yaml.load(f, Loader=yaml.FullLoader)
+
+
+def load_reranker_config(config_path: str = get_abs_path("config/reranker.yml"), encoding: str = "utf-8"):
+    with open(config_path, "r", encoding=encoding) as f:
+        return yaml.load(f, Loader=yaml.FullLoader)
+
+
 rag_conf = load_rag_config()
 chroma_conf = load_chroma_config()
 agent_conf = load_agent_config()

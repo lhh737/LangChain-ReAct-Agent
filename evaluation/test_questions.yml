@@ -1,0 +1,176 @@
+# 科研文献智能问答 — 测试问题集
+# 基于 data/ 下 3 篇论文（DnD, BTD, NeuroDeX）设计的真实可答问题
+# 覆盖：单篇检索、事实提取、方法问答、论文对比、知识边界（不可答）
+
+questions:
+  # ========== DnD 论文 (9题) ==========
+  - id: "D001"
+    category: "retrieval"
+    question: "DnD 是什么？它要解决什么问题？"
+    required_sections: ["abstract", "introduction"]
+
+  - id: "D002"
+    category: "retrieval"
+    question: "DnD 的核心流程包括哪些步骤？"
+    required_sections: ["method"]
+
+  - id: "D003"
+    category: "factual"
+    question: "DnD 的输出是什么格式？会恢复哪些模型信息？"
+    required_sections: ["method", "experiment"]
+
+  - id: "D004"
+    category: "factual"
+    question: "DnD 在实验中支持了哪些编译器和 ISA？"
+    required_sections: ["experiment"]
+
+  - id: "D005"
+    category: "retrieval"
+    question: "DnD 不支持哪些类型的 DNN 二进制？原因是什么？"
+    required_sections: ["discussion", "method"]
+
+  - id: "D006"
+    category: "factual"
+    question: "DnD 的主要假设有哪些？"
+    required_sections: ["method"]
+
+  - id: "D007"
+    category: "citation"
+    question: "DnD 为什么对安全分析有用？列出至少两个用途。"
+    required_sections: ["introduction", "discussion"]
+
+  - id: "D008"
+    category: "retrieval"
+    question: "DnD 如何识别未知 DNN 算子的类型？"
+    required_sections: ["method"]
+
+  - id: "D009"
+    category: "citation"
+    question: "DnD 的真实微控制器案例说明了什么？"
+    required_sections: ["experiment"]
+
+  # ========== BTD 论文 (9题) ==========
+  - id: "B001"
+    category: "retrieval"
+    question: "BTD 是什么？它的输入和输出分别是什么？"
+    required_sections: ["abstract", "introduction"]
+
+  - id: "B002"
+    category: "retrieval"
+    question: "BTD 的三步恢复方法具体是什么？"
+    required_sections: ["method"]
+
+  - id: "B003"
+    category: "factual"
+    question: "BTD 主要针对什么平台？它是否天然支持所有架构？"
+    required_sections: ["method", "discussion"]
+
+  - id: "B004"
+    category: "factual"
+    question: "BTD 的评估规模和效果有哪些关键数字？"
+    required_sections: ["experiment"]
+
+  - id: "B005"
+    category: "citation"
+    question: "BTD 的使用流程中用户需要提供什么？错误如何处理？"
+    required_sections: ["method"]
+
+  - id: "B006"
+    category: "comparison"
+    question: "BTD 与普通 C/C++ 反编译器有什么不同？"
+    required_sections: ["introduction", "method"]
+
+  - id: "B007"
+    category: "retrieval"
+    question: "为什么 BTD 能够跨不同的编译优化恢复 DNN 算子？"
+    required_sections: ["introduction", "method"]
+
+  - id: "B008"
+    category: "factual"
+    question: "BTD 将 DNN operators 分成了哪些类型？Conv 属于哪一类？"
+    required_sections: ["method"]
+
+  - id: "B009"
+    category: "citation"
+    question: "为什么 NNFusion 编译的 executable 对 BTD 来说更容易恢复？"
+    required_sections: ["experiment", "discussion"]
+
+  # ========== NeuroDeX 论文 (8题) ==========
+  - id: "N001"
+    category: "retrieval"
+    question: "NeuroDeX 是什么？它想弥补已有方法的哪些不足？"
+    required_sections: ["abstract", "introduction"]
+
+  - id: "N002"
+    category: "retrieval"
+    question: "NeuroDeX 的整体工作流是怎样的？"
+    required_sections: ["method"]
+
+  - id: "N003"
+    category: "citation"
+    question: "NeuroDeX 中 LLM 主要发挥什么作用？"
+    required_sections: ["method"]
+
+  - id: "N004"
+    category: "factual"
+    question: "NeuroDeX 如何处理量化编译模型？效果如何？"
+    required_sections: ["method", "experiment"]
+
+  - id: "N005"
+    category: "retrieval"
+    question: "NeuroDeX 认为已有 DNN 反编译器的主要限制是什么？"
+    required_sections: ["introduction", "related_work"]
+
+  - id: "N006"
+    category: "factual"
+    question: "NeuroDeX 的 operator type recognition 和属性恢复准确率具体是多少？"
+    required_sections: ["experiment", "abstract"]
+
+  - id: "N007"
+    category: "citation"
+    question: "NeuroDeX 的威胁模型包含哪些条件？"
+    required_sections: ["method"]
+
+  - id: "N008"
+    category: "citation"
+    question: "NeuroDeX 为什么只需要一个 trivial input 就能做动态分析？"
+    required_sections: ["method"]
+
+  # ========== 跨论文对比 (5题) ==========
+  - id: "C001"
+    category: "comparison"
+    question: "DnD 和 BTD 在目标平台、核心方法上有什么区别？"
+    required_sections: ["method", "introduction"]
+
+  - id: "C002"
+    category: "comparison"
+    question: "BTD 和 NeuroDeX 在 operator type recognition 的方法上有什么不同？"
+    required_sections: ["method"]
+
+  - id: "C003"
+    category: "comparison"
+    question: "DnD 和 NeuroDeX 都追求跨架构支持，它们的核心思路有什么差异？"
+    required_sections: ["method", "introduction"]
+
+  - id: "C004"
+    category: "comparison"
+    question: "三篇论文在输出目标上有什么共同点？"
+    required_sections: ["abstract", "introduction"]
+
+  - id: "C005"
+    category: "comparison"
+    question: "这三篇论文中，哪篇明确处理了量化编译模型？"
+    required_sections: ["abstract", "method"]
+
+  # ========== 知识边界 / 不可答问题 (3题) ==========
+  - id: "U001"
+    category: "boundary"
+    question: "这些论文有没有讨论 GPT-6 的实验结果？"
+
+  - id: "U002"
+    category: "boundary"
+    question: "DnD 是否报告了在量子计算机上的部署实验？"
+
+  - id: "U003"
+    category: "boundary"
+    question: "NeuroDeX 是否给出了医学临床试验中的患者人数和治疗效果？"

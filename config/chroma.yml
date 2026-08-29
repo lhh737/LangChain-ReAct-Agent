@@ -1,11 +1,37 @@
-collection_name : agent
-persist_directory : chroma_db
-k :  3
-data_path : data
-md5_hex_store : md5.txt
-allow_knowledge_file_type : ["txt","pdf"]
+# Chroma 向量库 & 检索参数
 
-chunk_size : 200
-chunk_overlap : 20
-separators : ["\n\n","。",".","?","？","!"," ",""]
+# ---- 分块策略 ----
+collection_name: papers
+persist_directory: chroma_db
+data_path: data
+md5_hex_store: md5.txt
+allow_knowledge_file_type: ["txt", "pdf"]
 
+chunk_size: 400                     # 通用段落分块大小 (tokens)
+chunk_overlap: 80                   # 块间重叠 (tokens)
+paper_max_chunk_size: 250           # 论文专用块大小 (tokens)
+chunk_strategy: section_paragraph   # 按章节+段落切分
+min_paragraph_tokens: 50            # 最小段落 token 数
+encoding_name: cl100k_base          # tiktoken 编码
+
+separators: ["\n\n", "。", ".", "?", "？", "!", " ", ""]
+
+# ---- 混合检索 ----
+retrieval_strategy: hybrid          # BM25 + 向量混合
+hybrid_retrieval_k: 50              # BM25/向量各自 top-K
+rrf_k: 60                           # RRF 融合参数
+rrf_fusion_k: 50                    # RRF 融合后输出 top-K
+rerank_top_k: 8                     # Reranker 输入 top-K
+k: 5                                # 最终返回 top-K chunk
+enable_reranker: true               # 启用精排
+
+# ---- Metadata Boost 权重 ----
+boost_program_name: 0.03            # 论文名匹配加分
+boost_section_match: 0.01           # 章节匹配加分
+section_soft_boost: 0.01            # 章节软加权
+
+# ---- 检索质量阈值 (软 miss 判定) ----
+quality_reranker_min_score: 0.35        # Reranker 最高分低于此 → 信号1
+quality_keyword_coverage_min: 0.3       # query 实词覆盖率 < 30% → 信号3
+quality_domain_similarity_min: 0.45     # query-标题向量相似度 < 0.45 → 信号4
+# 4 个信号命中 ≥ 2 个 → 判定为软 miss

@@ -1,0 +1,20 @@
+# SiliconFlow Reranker 配置
+reranker_model: BAAI/bge-reranker-v2-m3
+
+# ---- 精排参数 ----
+rerank_top_k: 8                     # Reranker 输入 top-K（从 RRF 输出取）
+final_top_k: 5                      # 最终返回 chunk 数
+passage_enhance: true               # 增强上下文（来源+章节+页码）
+
+# ---- Score Fusion ----
+score_fusion_enabled: true
+score_fusion_alpha: 0.7             # final = 0.7×rerank + 0.3×metadata
+meta_score_program: 0.08            # 论文名匹配权重
+meta_score_section: 0.02            # 章节匹配权重
+meta_score_keyword: 0.02            # 关键词覆盖率权重
+
+# ---- 检索质量阈值 (软 miss 判定) ----
+quality_reranker_min_score: 0.35        # Reranker 最高分低于此 → 信号1
+quality_keyword_coverage_min: 0.3       # query 实词覆盖率 < 30% → 信号3
+quality_domain_similarity_min: 0.45     # query-标题向量相似度 < 0.45 → 信号4
+# 4 个信号命中 ≥ 2 个 → 判定为软 miss

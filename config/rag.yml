@@ -1,2 +1,2 @@
-chat_model_name: qwen3-max
-embedding_model_name: text-embedding-v4
+chat_model_name: deepseek-ai/DeepSeek-V3.2
+embedding_model_name: BAAI/bge-m3
